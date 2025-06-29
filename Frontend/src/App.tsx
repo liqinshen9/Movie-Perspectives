@@ -1,35 +1,57 @@
-import { useEffect, useState } from 'react';
-import type { Movie }           from './models/Movie';
-import { getAllMovies }         from './api/movieService';
+import React, { useState }   from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Navigate
+} from 'react-router-dom';
+
+import Home     from './pages/Home';
+import Login    from './pages/Login';
+import Register from './pages/Register';
 
 export default function App() {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  // track login state in localStorage
+  const [loggedIn, setLoggedIn] = useState(
+    !!localStorage.getItem('user')
+  );
 
-  useEffect(() => {
-    getAllMovies().then(setMovies).catch(console.error);
-  }, []);
+  const doLogin = () => {
+    localStorage.setItem('user','yes');
+    setLoggedIn(true);
+  };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Movie Gallery</h1>
-      <div style={{ display: 'grid', gap: 20, gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
-        {movies.map(m => (
-          <div key={m.id} style={{ border: '1px solid #ccc', borderRadius: 8, overflow: 'hidden' }}>
-            {m.photoUrl && (
-              <img
-                src={m.photoUrl}
-                alt={m.title}
-                style={{ width: '100%', height: 300, objectFit: 'cover' }}
-                onError={e => (e.target as HTMLImageElement).src = '/fallback-poster.jpg'}
-              />
-            )}
-            <div style={{ padding: 10 }}>
-              <h3>{m.title}</h3>
-              <p style={{ color: '#555' }}>{m.introduction}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <BrowserRouter>
+      <header style={{
+        padding:'10px 20px',
+        display:'flex',
+        justifyContent:'space-between',
+        alignItems:'center',
+        borderBottom:'1px solid #eee'
+      }}>
+        <h1 style={{margin:0}}>🎥 Movie Perspectives</h1>
+        <nav>
+          <Link to="/"      style={{marginRight:12}}>Home</Link>
+          <Link to="/login" style={{marginRight:12}}>Login</Link>
+          <Link to="/register">Register</Link>
+        </nav>
+      </header>
+
+      <main style={{padding:20}}>
+        <Routes>
+          {/* guard home */}
+          <Route path="/" element={
+            loggedIn
+              ? <Home />
+              : <Navigate to="/login" replace />
+          }/>
+
+          <Route path="/login"    element={<Login    onLogin={doLogin}/>} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   );
 }

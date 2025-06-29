@@ -36,3 +36,12 @@ C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\MoviePerspe
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\MoviePerspectives.genruntimeconfig.cache
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\ref\MoviePerspectives.dll
 C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\CsvHelper.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\Data\movies.csv
