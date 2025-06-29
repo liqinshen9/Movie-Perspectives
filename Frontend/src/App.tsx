@@ -1,21 +1,35 @@
-// src/App.tsx
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import Home        from './pages/Home';
-import NewMovie    from './pages/NewMovie';
-import MovieDetail from './pages/MovieDetail';
+import { useEffect, useState } from 'react';
+import type { Movie }           from './models/Movie';
+import { getAllMovies }         from './api/movieService';
 
 export default function App() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    getAllMovies().then(setMovies).catch(console.error);
+  }, []);
+
   return (
     <div style={{ padding: 20 }}>
-      <nav style={{ marginBottom: 20 }}>
-        <Link to="/">Home</Link> | <Link to="/new">Add Movie</Link>
-      </nav>
-      <Routes>
-        <Route path="/"           element={<Home />}        />
-        <Route path="/new"        element={<NewMovie />}    />
-        <Route path="/movies/:id" element={<MovieDetail />} />
-      </Routes>
+      <h1>Movie Gallery</h1>
+      <div style={{ display: 'grid', gap: 20, gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+        {movies.map(m => (
+          <div key={m.id} style={{ border: '1px solid #ccc', borderRadius: 8, overflow: 'hidden' }}>
+            {m.photoUrl && (
+              <img
+                src={m.photoUrl}
+                alt={m.title}
+                style={{ width: '100%', height: 300, objectFit: 'cover' }}
+                onError={e => (e.target as HTMLImageElement).src = '/fallback-poster.jpg'}
+              />
+            )}
+            <div style={{ padding: 10 }}>
+              <h3>{m.title}</h3>
+              <p style={{ color: '#555' }}>{m.introduction}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

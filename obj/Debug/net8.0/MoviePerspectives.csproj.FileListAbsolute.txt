@@ -1,5 +1,4 @@
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\appsettings.json
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\MoviePerspectives.exe
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\MoviePerspectives.deps.json
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\MoviePerspectives.runtimeconfig.json
@@ -87,3 +86,9 @@ C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\runtimes\win\lib\ne
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\Backend\appsettings.json
+C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\Frontend\package-lock.json
+C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\Frontend\package.json
+C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\Frontend\tsconfig.app.json
+C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\Frontend\tsconfig.json
+C:\Users\spong\Documents\Movie-Perspectives\bin\Debug\net8.0\Frontend\tsconfig.node.json
