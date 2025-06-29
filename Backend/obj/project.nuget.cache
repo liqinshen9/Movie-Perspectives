@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7SQYlpioAoo=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\spong\\Documents\\Movie-Perspectives\\Backend\\MoviePerspectives.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\spong\\.nuget\\packages\\csvhelper\\33.1.0\\csvhelper.33.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
