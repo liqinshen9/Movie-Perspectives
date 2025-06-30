@@ -1,4 +1,5 @@
-import React, { useState }   from 'react';
+// src/App.tsx
+import React, { useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -7,49 +8,77 @@ import {
   Navigate
 } from 'react-router-dom';
 
-import Home     from './pages/Home';
-import Login    from './pages/Login';
-import Register from './pages/Register';
+import Home        from './pages/Home';
+import Login       from './pages/Login';
+import Register    from './pages/Register';
+import MovieDetail from './pages/MovieDetail';
 
 export default function App() {
-  // track login state in localStorage
-  const [loggedIn, setLoggedIn] = useState(
-    !!localStorage.getItem('user')
-  );
+  // null = not logged in; otherwise holds the username
+  const [user, setUser] = useState<string | null>(null);
 
-  const doLogin = () => {
-    localStorage.setItem('user','yes');
-    setLoggedIn(true);
-  };
+  const handleLogin  = (username: string) => setUser(username);
+  const handleLogout = () => setUser(null);
 
   return (
     <BrowserRouter>
+      {/* header/nav */}
       <header style={{
-        padding:'10px 20px',
-        display:'flex',
-        justifyContent:'space-between',
-        alignItems:'center',
-        borderBottom:'1px solid #eee'
+        padding: '10px 20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '1px solid #eee',
       }}>
-        <h1 style={{margin:0}}>🎥 Movie Perspectives</h1>
+        <h1 style={{ margin: 0 }}>🎥 Movie Perspectives</h1>
         <nav>
-          <Link to="/"      style={{marginRight:12}}>Home</Link>
-          <Link to="/login" style={{marginRight:12}}>Login</Link>
-          <Link to="/register">Register</Link>
+          <Link to="/"      style={{ marginRight: 12 }}>Home</Link>
+
+          {user
+            ? <>
+                <span style={{ marginRight: 12 }}>Hello, {user}</span>
+                <button onClick={handleLogout}>Logout</button>
+              </>
+            : <>
+                <Link to="/login"    style={{ marginRight: 12 }}>Login</Link>
+                <Link to="/register">Register</Link>
+              </>
+          }
         </nav>
       </header>
 
-      <main style={{padding:20}}>
+      <main style={{ padding: 20 }}>
         <Routes>
-          {/* guard home */}
-          <Route path="/" element={
-            loggedIn
-              ? <Home />
-              : <Navigate to="/login" replace />
-          }/>
+          {/* public home */}
+          <Route path="/" element={<Home />} />
 
-          <Route path="/login"    element={<Login    onLogin={doLogin}/>} />
-          <Route path="/register" element={<Register />} />
+          {/* login/register */}
+          <Route
+            path="/login"
+            element={
+              user
+                ? <Navigate to="/" replace />
+                : <Login onLogin={handleLogin} />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              user
+                ? <Navigate to="/" replace />
+                : <Register onRegister={handleLogin} />
+            }
+          />
+
+          {/* protected movie detail */}
+          <Route
+            path="/movies/:id"
+            element={
+              user
+                ? <MovieDetail />
+                : <Navigate to="/login" replace />
+            }
+          />
         </Routes>
       </main>
     </BrowserRouter>
