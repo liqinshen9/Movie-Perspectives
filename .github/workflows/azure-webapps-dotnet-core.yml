@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to Azure Web App
+name: Build and deploy ASP.NET Core app to Azure Web App
 
 on:
   push:
@@ -10,25 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'     
 
-      - name: Restore dependencies
-        run: dotnet restore ./Backend/MoviePerspectives.csproj
+    - name: Restore dependencies
+      run: dotnet restore Backend/MoviePerspectives.csproj
 
-      - name: Build
-        run: dotnet build --configuration Release ./Backend/MoviePerspectives.csproj
+    - name: Build
+      run: dotnet build --configuration Release Backend/MoviePerspectives.csproj
 
-      - name: Publish
-        run: dotnet publish --configuration Release --output publish ./Backend/MoviePerspectives.csproj
+    - name: Publish
+      run: dotnet publish --configuration Release --output publish_output Backend/MoviePerspectives.csproj
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: Movie-Perspectives        
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: publish
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: MOVIE-PERSPECTIVES
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: publish_output
+
