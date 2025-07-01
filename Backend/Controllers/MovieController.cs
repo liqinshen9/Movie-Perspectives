@@ -8,16 +8,16 @@ namespace MoviePerspectives.Controllers
     [Route("api/[controller]")]
     public class MovieController : ControllerBase
     {
-        private readonly IMovieRepository _movies;
-        public MovieController(IMovieRepository movies) => _movies = movies;
+        private readonly IMovieRepository _repo;
+        public MovieController(IMovieRepository r) => _repo = r;
 
         [HttpGet]
-        public Task<IEnumerable<Movie>> GetAll() => _movies.GetAllAsync();
+        public Task<List<Movie>> GetAll() => _repo.GetAllAsync();
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var m = await _movies.GetByIdAsync(id);
+            var m = await _repo.GetByIdAsync(id);
             return m == null ? NotFound() : Ok(m);
         }
     }

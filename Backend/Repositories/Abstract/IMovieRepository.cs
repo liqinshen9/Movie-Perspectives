@@ -4,7 +4,7 @@ namespace MoviePerspectives.Repositories.Abstract
 {
     public interface IMovieRepository
     {
-        Task<IEnumerable<Movie>> GetAllAsync();
-        Task<Movie?> GetByIdAsync(int id);
+        Task<List<Movie>> GetAllAsync();
+        Task<Movie?>     GetByIdAsync(int id);
     }
 }

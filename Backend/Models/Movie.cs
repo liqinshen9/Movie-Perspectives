@@ -1,13 +1,15 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace MoviePerspectives.Models
 {
     public class Movie
     {
-        public int Id { get; set; }
-        public string Title { get; set; } = null!;
-        public DateTime Release { get; set; }
-        public string PhotoUrl { get; set; } = null!;
-        public string Introduction { get; set; } = null!;
-
-        public List<Review> Reviews { get; set; } = new();
+        [Key]
+        public int      Id           { get; set; }
+        [Required] public string   Title         { get; set; } = default!;
+        [Required] public DateTime Release  { get; set; }
+        [Required] public string   PhotoUrl      { get; set; } = default!;
+        [Required] public string   Introduction  { get; set; } = default!;
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using MoviePerspectives.Models;
 using MoviePerspectives.Repositories.Abstract;
 
@@ -8,23 +9,25 @@ namespace MoviePerspectives.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository _users;
-        public AuthController(IUserRepository users) => _users = users;
+        private readonly IUserRepository _repo;
+        public AuthController(IUserRepository repo) => _repo = repo;
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] User u)
+        public async Task<IActionResult> Register([FromBody] User user)
         {
-            if (await _users.ExistsAsync(u.Username))
-                return BadRequest("Username exists");
-            await _users.AddAsync(u);
+            if (await _repo.ExistsAsync(user.Username))
+                return BadRequest("Username already exists.");
+
+            await _repo.AddAsync(user);
             return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User u)
+        public async Task<IActionResult> Login([FromBody] User creds)
         {
-            if (!await _users.ValidateCredentialsAsync(u.Username, u.Password))
-                return Unauthorized();
+            if (!await _repo.ValidateCredentialsAsync(creds.Username, creds.Password))
+                return Unauthorized("Invalid credentials.");
+
             return Ok();
         }
     }
