@@ -1,6 +1,8 @@
+// src/models/Review.ts
 export interface Review {
   id: number;
-  content?: string;
+  movieId: number;
+  username: string;
   rating: number;
-  reviewDate: string;
+  text: string;
 }

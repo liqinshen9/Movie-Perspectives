@@ -6,6 +6,6 @@ namespace MoviePerspectives.Repositories.Abstract
     {
         Task<bool> ExistsAsync(string username);
         Task AddAsync(User user);
-        Task<User?> ValidateCredentialsAsync(string username, string password);
+        Task<bool> ValidateCredentialsAsync(string username, string password);
     }
 }

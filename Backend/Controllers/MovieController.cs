@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MoviePerspectives.Models;
 using MoviePerspectives.Repositories.Abstract;
 
 namespace MoviePerspectives.Controllers
@@ -7,11 +8,17 @@ namespace MoviePerspectives.Controllers
     [Route("api/[controller]")]
     public class MovieController : ControllerBase
     {
-        private readonly IMovieRepository _repo;
-        public MovieController(IMovieRepository repo) => _repo = repo;
+        private readonly IMovieRepository _movies;
+        public MovieController(IMovieRepository movies) => _movies = movies;
 
         [HttpGet]
-        public async Task<IActionResult> Get() =>
-            Ok(await _repo.GetAllAsync());
+        public Task<IEnumerable<Movie>> GetAll() => _movies.GetAllAsync();
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var m = await _movies.GetByIdAsync(id);
+            return m == null ? NotFound() : Ok(m);
+        }
     }
 }

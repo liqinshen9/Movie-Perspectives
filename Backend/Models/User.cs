@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 namespace MoviePerspectives.Models
 {
     public class User
     {
-        public string Username { get; set; } = default!;
-        public string Password { get; set; } = default!;
+        [Key]
+        public string Username { get; set; } = null!;
+        public string Password { get; set; } = null!;
     }
 }
