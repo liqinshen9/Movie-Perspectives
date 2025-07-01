@@ -6,8 +6,6 @@ namespace MoviePerspectives.Models
     {
         [Key]
         public string Username { get; set; } = null!;
-
-        // This matches your CSV header "Password"
         public string Password { get; set; } = null!;
     }
 }
