@@ -1,50 +1,35 @@
-name: Build and deploy ASP.Net Core app to Azure Web App
+name: Build & deploy to Azure
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
- 
-  build:
-    runs-on: windows-latest
-
+  build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'
-          include-prerelease: true
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore Backend/MoviePerspectives.csproj
+
+      - name: Build
+        run: dotnet build --configuration Release Backend/MoviePerspectives.csproj
 
       - name: Publish
-        run: dotnet publish Backend/MoviePerspectives.csproj --configuration Release --output ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: site
-          path: ${{env.DOTNET_ROOT}}/myapp
-
- 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: Production
-
-    steps:
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: site
+        run: dotnet publish --configuration Release --output publish_output Backend/MoviePerspectives.csproj
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'movie-perspectives-bhcncrhzgudghzbc'     
-          package: site
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  
+          app-name: 'MOVIE-PERSPECTIVES'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: publish_output
