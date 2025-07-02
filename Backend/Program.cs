@@ -10,35 +10,25 @@ using MoviePerspectives.Models;
 using MoviePerspectives.Repositories.Abstract;
 using MoviePerspectives.Repositories.Concrete;
 using System.Globalization;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<MovieContext>((serviceProvider, options) =>
-{
-    var env = serviceProvider.GetRequiredService<IHostEnvironment>();
+// 1) DbContext
+builder.Services.AddDbContext<MovieContext>(opts =>
+    opts.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Missing DefaultConnection")
+    )
+);
 
-    if (env.IsDevelopment())
-    {
-        options.UseInMemoryDatabase("MoviePerspectivesDb");
-    }
-    else
-    {
-        var conn = builder.Configuration
-                         .GetConnectionString("DefaultConnection")
-                  ?? throw new InvalidOperationException("Missing DefaultConnection");
-        options.UseSqlServer(conn, sqlOpts => 
-                sqlOpts.EnableRetryOnFailure())
-               .ConfigureWarnings(w => 
-                w.Ignore(RelationalEventId.PendingModelChangesWarning));
-    }
-});
-
+// 2) Repositories
 builder.Services.AddScoped<IMovieRepository, EfMovieRepository>();
 builder.Services.AddScoped<IReviewRepository, EfReviewRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 
 builder.Services.AddControllers();
-builder.Services.AddCors(o => o.AddDefaultPolicy(b => 
+builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
     b.AllowAnyOrigin()
      .AllowAnyHeader()
      .AllowAnyMethod()
@@ -46,6 +36,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
 
 var app = builder.Build();
 
+// 3) Migrate & Seed
 using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<MovieContext>();
@@ -60,20 +51,43 @@ using (var scope = app.Services.CreateScope())
         ctx.Database.Migrate();
     }
 
+    // ─── Seed Movies ─────────────────────────────
     if (!ctx.Movies.Any())
     {
         var movieCsv = Path.Combine(env.ContentRootPath, "Data", "movies.csv");
         using var r = new StreamReader(movieCsv);
         using var csv = new CsvReader(r, CultureInfo.InvariantCulture);
-        ctx.Movies.AddRange(csv.GetRecords<Movie>());
+
+        // **zero out the Id** so SQL Server will assign a new one
+        var movies = csv
+            .GetRecords<Movie>()
+            .Select(m => {
+                m.Id = 0;
+                return m;
+            })
+            .ToList();
+
+        ctx.Movies.AddRange(movies);
     }
 
+    // ─── Seed Users ──────────────────────────────
     if (!ctx.Users.Any())
     {
         var userCsv = Path.Combine(env.ContentRootPath, "Data", "users.csv");
         using var r = new StreamReader(userCsv);
         using var csv = new CsvReader(r, CultureInfo.InvariantCulture);
-        ctx.Users.AddRange(csv.GetRecords<User>());
+
+        // if your User model also has an identity PK, you can zero it here too
+        var users = csv
+            .GetRecords<User>()
+            .Select(u => {
+                // if User.Id is an identity, zero it; otherwise omit
+                // u.Id = 0;
+                return u;
+            })
+            .ToList();
+
+        ctx.Users.AddRange(users);
     }
 
     ctx.SaveChanges();
