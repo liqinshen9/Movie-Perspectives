@@ -20,5 +20,14 @@ namespace MoviePerspectives.Controllers
             var m = await _repo.GetByIdAsync(id);
             return m == null ? NotFound() : Ok(m);
         }
+
+        [HttpPost("reload")]
+        public IActionResult ReloadCsv()
+        {
+            _repo.LoadFromCsv("Data/movies.csv");
+            return Ok();
+        }
     }
+
+    
 }

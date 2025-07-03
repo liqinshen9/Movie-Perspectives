@@ -12,8 +12,8 @@ using MoviePerspectives.Context;
 namespace MoviePerspectives.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20250701111002_Initial_Create")]
-    partial class Initial_Create
+    [Migration("20250703034257_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

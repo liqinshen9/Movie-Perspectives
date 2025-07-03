@@ -1,0 +1,53 @@
+/* src/pages/Home.css */
+
+.home-page {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Center the search area */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Flex‐wrap icon + input into one “pill” */
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding-right: 0.5rem;
+}
+
+/* The magnifying glass */
+.search-icon {
+  padding: 0 0.75rem;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+/* The actual text box */
+.search-wrapper input {
+  border: none;
+  outline: none;
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 6px 0 0 6px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* rest of your existing grid & card styles… */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* etc… */

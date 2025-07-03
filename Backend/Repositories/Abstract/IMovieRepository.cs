@@ -6,5 +6,6 @@ namespace MoviePerspectives.Repositories.Abstract
     {
         Task<List<Movie>> GetAllAsync();
         Task<Movie?>     GetByIdAsync(int id);
+        void LoadFromCsv(string path);
     }
 }
