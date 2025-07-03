@@ -1,33 +1,42 @@
-// src/App.tsx
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
-import Home     from './pages/Home';
-import Login    from './pages/Login';
-import Register from './pages/Register';
+import React, { useState } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from 'react-router-dom';
+
+import Home        from './pages/Home';
 import MovieDetail from './pages/MovieDetail';
+import Login       from './pages/Login';
+import Register    from './pages/Register';
+import { getCurrentUser, logout } from './api/authService';
 
 export default function App() {
-  const [username, setUsername] = useState<string | null>(
-    () => localStorage.getItem('username')
-  );
-  const handleLogin = (u: string) => {
-    localStorage.setItem('username', u);
-    setUsername(u);
-  };
+  const [user, setUser] = useState<string | null>(getCurrentUser());
+
+  const handleLogin = (username: string) => setUser(username);
   const handleLogout = () => {
-    localStorage.removeItem('username');
-    setUsername(null);
+    logout();
+    setUser(null);
   };
 
   return (
     <BrowserRouter>
-      <header style={{ padding: 20, borderBottom: '1px solid #eee', display:'flex', justifyContent:'space-between'}}>
-        <h1>🎬 Movie Perspectives</h1>
+      <header style={{
+        padding: '10px 20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '1px solid #eee',
+      }}>
+        <h1 style={{ margin: 0 }}>🎬 Movie Perspectives</h1>
         <nav>
           <Link to="/" style={{ marginRight: 12 }}>Home</Link>
-          {username ? (
+          {user ? (
             <>
-              <span style={{ marginRight: 12 }}>Hello, {username}</span>
+              <span style={{ marginRight: 12 }}>Hello, {user}</span>
               <button onClick={handleLogout}>Logout</button>
             </>
           ) : (
@@ -41,32 +50,32 @@ export default function App() {
 
       <main style={{ padding: 20 }}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={user
+              ? <Home />
+              : <Navigate to="/login" replace />}
+          />
 
           <Route
             path="/movies/:id"
-            element={
-              username
-                ? <MovieDetail />
-                : <Navigate to="/login" replace />
-            }
+            element={user
+              ? <MovieDetail username={user} />
+              : <Navigate to="/login" replace />}
           />
 
           <Route
             path="/login"
-            element={
-              username
-                ? <Navigate to="/" replace />
-                : <Login onLogin={handleLogin} />
-            }
+            element={user
+              ? <Navigate to="/" replace />
+              : <Login onLogin={handleLogin} />}
           />
+
           <Route
             path="/register"
-            element={
-              username
-                ? <Navigate to="/" replace />
-                : <Register />
-            }
+            element={user
+              ? <Navigate to="/" replace />
+              : <Register />}
           />
         </Routes>
       </main>

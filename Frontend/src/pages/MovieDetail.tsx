@@ -1,59 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams }   from 'react-router-dom';
 import { getMovieById } from '../api/movieService';
 import {
   getAllReviews,
   postReview,
   deleteReview
 } from '../api/reviewService';
-import { getCurrentUser } from '../api/authService';
-import type { Movie } from '../models/Movie';
+import type { Movie }  from '../models/Movie';
 import type { Review } from '../models/Review';
 
-export default function MovieDetail() {
+interface MovieDetailProps {
+  username: string;
+}
+
+export default function MovieDetail({ username }: MovieDetailProps) {
   const { id } = useParams<{ id: string }>();
   const movieId = Number(id);
   const [movie, setMovie]     = useState<Movie | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [rating, setRating]   = useState<number>(5);
   const [text, setText]       = useState<string>('');
-  const user = getCurrentUser();
 
-  // load movie & its reviews
   useEffect(() => {
     if (!movieId) return;
-    getMovieById(movieId)
-      .then(m => setMovie(m))
-      .catch(console.error);
-
-    getAllReviews(movieId)
-      .then(setReviews)
-      .catch(console.error);
+    getMovieById(movieId).then(setMovie).catch(console.error);
+    getAllReviews(movieId).then(setReviews).catch(console.error);
   }, [movieId]);
 
-  // submit new review
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      alert('Please log in first.');
-      return;
-    }
-
-    await postReview({ movieId, rating, text, username: user });
-    // refresh the list so the just-submitted review appears
+    // now we trust `username` always exists
+    await postReview({ movieId, rating, text, username });
     const updated = await getAllReviews(movieId);
     setReviews(updated);
-
-    // clear form
     setRating(5);
     setText('');
   };
 
-  // delete a review (only author)
   const handleDelete = async (revId: number, author: string) => {
-    if (author !== user) return;
-    await deleteReview(revId, user!);
+    if (author !== username) return;
+    await deleteReview(revId, username);
     setReviews(await getAllReviews(movieId));
   };
 
@@ -82,9 +69,10 @@ export default function MovieDetail() {
               borderRadius: 4
             }}
           >
-            <strong>{r.username}</strong> — {r.rating}⭐
+            <strong>{r.username}</strong> —{' '}
+            <span style={{ color: '#f5a623' }}>{'★'.repeat(r.rating)}</span>
             <p>{r.text}</p>
-            {r.username === user && (
+            {r.username === username && (
               <button
                 style={{ color: 'red' }}
                 onClick={() => handleDelete(r.id, r.username)}
@@ -106,10 +94,13 @@ export default function MovieDetail() {
               onChange={e => setRating(Number(e.target.value))}
             >
               {[1,2,3,4,5].map(n => (
-                <option key={n} value={n}>{n}⭐</option>
+                <option key={n} value={n}>
+                  {'★'.repeat(n)}
+                </option>
               ))}
             </select>
           </label>
+
           <div style={{ marginTop: 8 }}>
             <label>
               Comment:
@@ -122,7 +113,10 @@ export default function MovieDetail() {
               />
             </label>
           </div>
-          <button type="submit" style={{ marginTop: 12 }}>Submit</button>
+
+          <button type="submit" style={{ marginTop: 12 }}>
+            Submit
+          </button>
         </form>
       </section>
     </div>

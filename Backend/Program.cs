@@ -14,7 +14,6 @@ using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1) DbContext
 builder.Services.AddDbContext<MovieContext>(opts =>
     opts.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
@@ -22,7 +21,6 @@ builder.Services.AddDbContext<MovieContext>(opts =>
     )
 );
 
-// 2) Repositories
 builder.Services.AddScoped<IMovieRepository, EfMovieRepository>();
 builder.Services.AddScoped<IReviewRepository, EfReviewRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
@@ -36,7 +34,6 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
 
 var app = builder.Build();
 
-// 3) Migrate & Seed
 using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<MovieContext>();
@@ -51,14 +48,12 @@ using (var scope = app.Services.CreateScope())
         ctx.Database.Migrate();
     }
 
-    // ─── Seed Movies ─────────────────────────────
     if (!ctx.Movies.Any())
     {
         var movieCsv = Path.Combine(env.ContentRootPath, "Data", "movies.csv");
         using var r = new StreamReader(movieCsv);
         using var csv = new CsvReader(r, CultureInfo.InvariantCulture);
 
-        // **zero out the Id** so SQL Server will assign a new one
         var movies = csv
             .GetRecords<Movie>()
             .Select(m => {
@@ -70,19 +65,14 @@ using (var scope = app.Services.CreateScope())
         ctx.Movies.AddRange(movies);
     }
 
-    // ─── Seed Users ──────────────────────────────
     if (!ctx.Users.Any())
     {
         var userCsv = Path.Combine(env.ContentRootPath, "Data", "users.csv");
         using var r = new StreamReader(userCsv);
         using var csv = new CsvReader(r, CultureInfo.InvariantCulture);
-
-        // if your User model also has an identity PK, you can zero it here too
         var users = csv
             .GetRecords<User>()
             .Select(u => {
-                // if User.Id is an identity, zero it; otherwise omit
-                // u.Id = 0;
                 return u;
             })
             .ToList();
