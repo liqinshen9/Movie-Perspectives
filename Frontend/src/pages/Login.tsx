@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { login }       from '../api/authService';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
 export default function Login({ onLogin }: { onLogin: (u: string) => void }) {
   const [u, setU] = useState(''),
@@ -14,7 +15,7 @@ export default function Login({ onLogin }: { onLogin: (u: string) => void }) {
       onLogin(u);
       nav('/');
     } catch {
-      alert('Invalid credentials or unregistered');
+      alert('Invalid credentials or unregistered!');
     }
   };
 

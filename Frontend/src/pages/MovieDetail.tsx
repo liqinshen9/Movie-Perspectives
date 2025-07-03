@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { useParams }   from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getMovieById } from '../api/movieService';
 import {
   getAllReviews,
   postReview,
   deleteReview
 } from '../api/reviewService';
-import type { Movie }  from '../models/Movie';
+import type { Movie } from '../models/Movie';
 import type { Review } from '../models/Review';
+
+import './MovieDetail.css';
 
 interface MovieDetailProps {
   username: string;
@@ -30,10 +32,8 @@ export default function MovieDetail({ username }: MovieDetailProps) {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // now we trust `username` always exists
     await postReview({ movieId, rating, text, username });
-    const updated = await getAllReviews(movieId);
-    setReviews(updated);
+    setReviews(await getAllReviews(movieId));
     setRating(5);
     setText('');
   };
@@ -44,51 +44,51 @@ export default function MovieDetail({ username }: MovieDetailProps) {
     setReviews(await getAllReviews(movieId));
   };
 
-  if (!movie) return <p>Loading…</p>;
+  if (!movie) return <p className="loading">Loading…</p>;
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto' }}>
-      <h1>{movie.title}</h1>
-      <img
-        src={movie.photoUrl}
-        alt={movie.title}
-        style={{ width: '100%', borderRadius: 8 }}
-      />
-      <p>{movie.introduction}</p>
+    <div className="movie-detail">
+      <h1 className="title">{movie.title}</h1>
 
-      <section>
+      <div className="poster-container">
+        <img
+          src={movie.photoUrl}
+          alt={movie.title}
+          className="movie-poster"
+        />
+      </div>
+
+      <p className="movie-intro">{movie.introduction}</p>
+
+      <section className="reviews-section">
         <h2>Reviews</h2>
         {reviews.length === 0 && <p>No reviews yet.</p>}
-        {reviews.map(r => (
-          <div
-            key={r.id}
-            style={{
-              border: '1px solid #ccc',
-              padding: 8,
-              marginBottom: 8,
-              borderRadius: 4
-            }}
-          >
-            <strong>{r.username}</strong> —{' '}
-            <span style={{ color: '#f5a623' }}>{'★'.repeat(r.rating)}</span>
-            <p>{r.text}</p>
-            {r.username === username && (
-              <button
-                style={{ color: 'red' }}
-                onClick={() => handleDelete(r.id, r.username)}
-              >
-                Delete
-              </button>
-            )}
-          </div>
-        ))}
+        <div className="reviews-list">
+          {reviews.map(r => (
+            <div key={r.id} className="review-card">
+              <div className="review-header">
+                <strong>{r.username}</strong>
+                <span className="stars">{'★'.repeat(r.rating)}</span>
+              </div>
+              <p className="review-text">{r.text}</p>
+              {r.username === username && (
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(r.id, r.username)}
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
       </section>
 
-      <section>
+      <section className="review-form-section">
         <h2>Leave a review</h2>
-        <form onSubmit={handleSubmit}>
+        <form className="review-form" onSubmit={handleSubmit}>
           <label>
-            Rating:{' '}
+            Rating:
             <select
               value={rating}
               onChange={e => setRating(Number(e.target.value))}
@@ -101,20 +101,16 @@ export default function MovieDetail({ username }: MovieDetailProps) {
             </select>
           </label>
 
-          <div style={{ marginTop: 8 }}>
-            <label>
-              Comment:
-              <br />
-              <textarea
-                value={text}
-                onChange={e => setText(e.target.value)}
-                rows={4}
-                style={{ width: '100%' }}
-              />
-            </label>
-          </div>
+          <label>
+            Comment:
+            <textarea
+              value={text}
+              onChange={e => setText(e.target.value)}
+              rows={4}
+            />
+          </label>
 
-          <button type="submit" style={{ marginTop: 12 }}>
+          <button type="submit" className="submit-button">
             Submit
           </button>
         </form>
