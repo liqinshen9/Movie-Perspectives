@@ -1,31 +1,63 @@
-/* MovieDetail.css */
 
+:root {
+  --bg:           #eef2f3;
+  --text:         #2c3e50;
+  --muted:        #444;
+  --card-bg:      #ffffff;
+  --input-bg:     #ffffff;
+  --input-border: #eee;
+  --placeholder:  #7f8c8d;
+  --button-bg:    #3498db;
+  --button-hover: #2980b9;
+  --button-text:  #ffffff;
+  --danger:       #e74c3c;
+  --danger-hover: #c0392b;
+}
+
+[data-theme="dark"] {
+  --bg:           #1e1e1e;
+  --text:         #ececec;
+  --muted:        #bbb;
+  --card-bg:      #2b2b2b;
+  --input-bg:     #333333;
+  --input-border: #444444;
+  --placeholder:  #888888;
+  --button-bg:    #2980b9;
+  --button-hover: #1f5d8f;
+  --button-text:  #ffffff;
+  --danger:       #c0392b;
+  --danger-hover: #992d22;
+}
+
+/* ─────────── Container ─────────── */
 .movie-detail {
   max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
+  color: var(--text);
+  background-color: var(--card-bg);
 }
 
 .loading {
   text-align: center;
   margin-top: 2rem;
-  color: #666;
+  color: var(--muted);
 }
 
-/* Title */
+/* ─────────── Title ─────────── */
 .title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #2c3e50;
+  color: var(--text);
 }
 
-/* Poster */
+/* ─────────── Poster ─────────── */
 .poster-container {
   display: flex;
   justify-content: center;
@@ -35,20 +67,18 @@
 .movie-poster {
   max-width: 100%;
   max-height: 350px;
-  width: auto;
-  height: auto;
   object-fit: contain;
   border-radius: 8px;
 }
 
-/* Intro paragraph */
+/* ─────────── Introduction ─────────── */
 .movie-intro {
   line-height: 1.6;
-  color: #444;
+  color: var(--muted);
   margin-bottom: 2rem;
 }
 
-/* Reviews section */
+/* ─────────── Sections ─────────── */
 .reviews-section,
 .review-form-section {
   margin-bottom: 2rem;
@@ -57,13 +87,13 @@
 .reviews-section h2,
 .review-form-section h2 {
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: var(--text);
   margin-bottom: 0.75rem;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--input-border);
   padding-bottom: 0.25rem;
 }
 
-/* Reviews list */
+/* ─────────── Reviews List ─────────── */
 .reviews-list {
   display: flex;
   flex-direction: column;
@@ -71,10 +101,15 @@
 }
 
 .review-card {
-  background: #fafafa;
-  border: 1px solid #eee;
+  background: var(--card-bg);
+  border: 1px solid var(--input-border);
   border-radius: 6px;
   padding: 1rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .review-header {
@@ -90,12 +125,12 @@
 
 .review-text {
   margin: 0.5rem 0;
-  color: #333;
+  color: var(--text);
 }
 
 .delete-button {
-  background: #e74c3c;
-  color: #fff;
+  background: var(--danger);
+  color: var(--button-text);
   border: none;
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
@@ -105,20 +140,22 @@
 }
 
 .delete-button:hover {
-  background: #c0392b;
+  background: var(--danger-hover);
 }
 
-/* Review form */
+/* ─────────── Review Form ─────────── */
 .review-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 1rem;
 }
 
 .review-form label {
-  display: flex;
-  flex-direction: column;
-  color: #34495e;
+  color: var(--text);
   font-size: 1rem;
 }
 
@@ -126,17 +163,24 @@
 .review-form textarea {
   margin-top: 0.25rem;
   padding: 0.5rem;
-  border: 1px solid #ccd1d9;
+  border: 1px solid var(--input-border);
   border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text);
   font-family: inherit;
   box-sizing: border-box;
+}
+
+.review-form textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 .submit-button {
   align-self: flex-start;
   padding: 0.75rem 1.5rem;
-  background: #3498db;
-  color: #fff;
+  background: var(--button-bg);
+  color: var(--button-text);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -145,5 +189,10 @@
 }
 
 .submit-button:hover {
-  background: #2980b9;
+  background: var(--button-hover);
+}
+
+/* ─────────── Page Background ─────────── */
+body {
+  background-color: var(--bg);
 }

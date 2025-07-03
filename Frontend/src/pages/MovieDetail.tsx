@@ -102,8 +102,9 @@ export default function MovieDetail({ username }: MovieDetailProps) {
           </label>
 
           <label>
-            Comment:
+            
             <textarea
+              placeholder="Please leave a review"
               value={text}
               onChange={e => setText(e.target.value)}
               rows={4}

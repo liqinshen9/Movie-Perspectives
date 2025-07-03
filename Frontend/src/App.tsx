@@ -1,11 +1,12 @@
 // src/App.tsx
 import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { ThemeProvider, ThemeContext } from './context/ThemeContext';
 
-import Home from './pages/Home';
+import Home        from './pages/Home';
 import MovieDetail from './pages/MovieDetail';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login       from './pages/Login';
+import Register    from './pages/Register';
 import { getCurrentUser, logout } from './api/authService';
 
 export default function App() {
@@ -22,82 +23,111 @@ export default function App() {
   };
 
   return (
-    <BrowserRouter>
-      <header
-        style={{
-          padding: '10px 20px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid #eee',
-        }}
-      >
-        <h1 style={{ margin: 0 }}>🎬 Movie Perspectives</h1>
-        <nav>
-          <Link to="/" style={{ marginRight: 12 }}>
-            Home
-          </Link>
-          {user ? (
-            <>
-              <span style={{ marginRight: 12 }}>Hello, {user}</span>
-              <button onClick={handleLogout}>Logout</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" style={{ marginRight: 12 }}>
-                Login
-              </Link>
-              <Link to="/register">Register</Link>
-            </>
-          )}
-        </nav>
-      </header>
+    <ThemeProvider>
+      <BrowserRouter>
+        <header
+          style={{
+            padding: '10px 20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: '1px solid #eee',
+          }}
+        >
+          <h1 style={{ margin: 0 }}>🎬 Movie Perspectives</h1>
+          <nav style={{ display: 'flex', alignItems: 'center' }}>
+            <Link to="/" style={{ marginRight: 12 }}>
+              Home
+            </Link>
 
-      <main style={{ padding: 20 }}>
-        <Routes>
-          {/* Home is public */}
-          <Route
-            path="/"
-            element={<Home username={user ?? undefined} />}
-          />
+            {user ? (
+              <>
+                <span style={{ marginRight: 12 }}>Hello, {user}</span>
+                <button onClick={handleLogout} style={{ marginRight: 12 }}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" style={{ marginRight: 12 }}>
+                  Login
+                </Link>
+                <Link to="/register" style={{ marginRight: 12 }}>
+                  Register
+                </Link>
+              </>
+            )}
 
-          {/* Movie details + review require login */}
-          <Route
-            path="/movies/:id"
-            element={
-              user ? (
-                <MovieDetail username={user} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
+            {/*  ─── THEME TOGGLE ───  */}
+            <ThemeToggle />
+          </nav>
+        </header>
 
-          {/* Login page */}
-          <Route
-            path="/login"
-            element={
-              user ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Login onLogin={handleLogin} />
-              )
-            }
-          />
+        <main style={{ padding: 20 }}>
+          <Routes>
+            {/* Home is public */}
+            <Route
+              path="/"
+              element={<Home username={user ?? undefined} />}
+            />
 
-          {/* Register page (no onRegister prop) */}
-          <Route
-            path="/register"
-            element={
-              user ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Register />
-              )
-            }
-          />
-        </Routes>
-      </main>
-    </BrowserRouter>
+            {/* Movie details + review require login */}
+            <Route
+              path="/movies/:id"
+              element={
+                user ? (
+                  <MovieDetail username={user} />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+
+            {/* Login page */}
+            <Route
+              path="/login"
+              element={
+                user ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Login onLogin={handleLogin} />
+                )
+              }
+            />
+
+            {/* Register page (no onRegister prop) */}
+            <Route
+              path="/register"
+              element={
+                user ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Register />
+                )
+              }
+            />
+          </Routes>
+        </main>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
+}
+
+// A tiny component to avoid cluttering the header above:
+function ThemeToggle() {
+  const { theme, toggle } = useContext(ThemeContext);
+  return (
+    <button
+      onClick={toggle}
+      aria-label="Toggle light/dark mode"
+      style={{
+        background: 'none',
+        border: 'none',
+        fontSize: '1.25rem',
+        cursor: 'pointer',
+      }}
+    >
+      {theme === 'light' ? '🌙' : '☀️'}
+    </button>
   );
 }

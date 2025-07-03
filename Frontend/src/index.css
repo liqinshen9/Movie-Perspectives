@@ -1,55 +1,63 @@
-/* prevent any horizontal scrollbar */
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-/* style the header container itself */
 header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;         /* breathing room at the edges */
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-sizing: border-box;
+  background-color: var(--card-bg);
+  color:            var(--text);
+  border-bottom:    1px solid #e0e0e0;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-/* your logo */
-header .site-brand img,
-header .logo {
-  height: 36px;
-}
-
-/* title */
-header h1 {
-  margin: 0 0 0 0.5rem;           /* small gap from logo */
-  font-size: 1.6rem;
-  color: #2c3e50;
-  flex-shrink: 0;                 /* never squish the title */
-}
-
-/* nav next to it */
-header nav {
-  display: flex;
-  gap: 1rem;                      /* space between links */
-  flex-wrap: wrap;                /* wrap if it gets too narrow */
-}
-
-/* each link */
-header nav a {
-  white-space: nowrap;            /* keep “Login” together */
-  font-size: 1rem;
-  color: #3498db;
+header a {
+  color: var(--text);
+  margin-right: 1rem;
   text-decoration: none;
-  flex-shrink: 0;                 /* don’t compress them away */
 }
 
-/* hover state */
-header nav a:hover {
-  color: #2980b9;
+header button {
+  background: var(--button-bg);
+  color:      var(--button-text);
+  border:     none;
+  padding:    0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor:        pointer;
+  transition: background 0.2s;
+}
+
+
+
+[data-theme="dark"] header {
+  background-color: #2e2e2e;
+  border-bottom: 1px solid #444;
+}
+
+
+[data-theme="dark"] header nav a.home-link {
+  font-family: 'Cinzel', serif;     
+  text-transform: uppercase;       
+  letter-spacing: 2px;              
+  font-size: 1.1rem;
+  color: #f1c40f;                  
+  transition: color 0.2s ease;
+}
+[data-theme="dark"] header nav a.home-link:hover {
+  color: #e1b12c;                    
+}
+
+
+[data-theme="dark"] header .greeting {
+  font-family: 'Segoe UI', sans-serif;
+  color: #ececec;
+}
+
+
+[data-theme="dark"] header button.logout-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin-right: 12px;      
+  color: var(--text);      
+}
+[data-theme="dark"] header button:hover {
+  background-color: #3c8ce7;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.5);
 }
