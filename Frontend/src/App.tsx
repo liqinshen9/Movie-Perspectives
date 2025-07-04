@@ -7,10 +7,10 @@ import Home        from './pages/Home';
 import MovieDetail from './pages/MovieDetail';
 import Login       from './pages/Login';
 import Register    from './pages/Register';
+import Profile     from './pages/Profile';    // ← new
 import { getCurrentUser, logout } from './api/authService';
 
 export default function App() {
-  // initial user comes from your authService (e.g. localStorage)
   const [user, setUser] = useState<string | null>(getCurrentUser());
 
   const handleLogin = (username: string) => {
@@ -21,6 +21,9 @@ export default function App() {
     logout();
     setUser(null);
   };
+
+  // Capital letter for avatar
+  const avatarLetter = user ? user.charAt(0).toUpperCase() : '';
 
   return (
     <ThemeProvider>
@@ -36,74 +39,83 @@ export default function App() {
         >
           <h1 style={{ margin: 0 }}>🎬 Movie Perspectives</h1>
           <nav style={{ display: 'flex', alignItems: 'center' }}>
-            <Link to="/" style={{ marginRight: 12 }}>
-              Home
-            </Link>
+            <Link to="/" style={{ marginRight: 12 }}>Home</Link>
 
             {user ? (
               <>
                 <span style={{ marginRight: 12 }}>Hello, {user}</span>
+
+                {/* avatar link */}
+                <Link
+                  to={`/profile/${user}`}
+                  style={{
+                    display: 'inline-block',
+                    width: 32,
+                    height: 32,
+                    lineHeight: '32px',
+                    textAlign: 'center',
+                    borderRadius: '50%',
+                    backgroundColor: '#3498db',
+                    color: '#ffffff',
+                    textDecoration: 'none',
+                    fontWeight: 'bold',
+                    marginRight: 12,
+                  }}
+                >
+                  {avatarLetter}
+                </Link>
+
                 <button onClick={handleLogout} style={{ marginRight: 12 }}>
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" style={{ marginRight: 12 }}>
-                  Login
-                </Link>
-                <Link to="/register" style={{ marginRight: 12 }}>
-                  Register
-                </Link>
+                <Link to="/login" style={{ marginRight: 12 }}>Login</Link>
+                <Link to="/register" style={{ marginRight: 12 }}>Register</Link>
               </>
             )}
 
-            {/*  ─── THEME TOGGLE ───  */}
+            {/* Theme toggle */}
             <ThemeToggle />
           </nav>
         </header>
 
         <main style={{ padding: 20 }}>
           <Routes>
-            {/* Home is public */}
-            <Route
-              path="/"
-              element={<Home username={user ?? undefined} />}
-            />
+            {/* Home */}
+            <Route path="/" element={<Home username={user ?? undefined} />} />
 
-            {/* Movie details + review require login */}
+            {/* Movie details (requires login) */}
             <Route
               path="/movies/:id"
               element={
-                user ? (
-                  <MovieDetail username={user} />
-                ) : (
-                  <Navigate to="/login" replace />
-                )
+                user
+                  ? <MovieDetail username={user} />
+                  : <Navigate to="/login" replace />
               }
             />
 
-            {/* Login page */}
+            {/* Profile page */}
+            <Route path="/profile/:username" element={<Profile />} />
+
+            {/* Login */}
             <Route
               path="/login"
               element={
-                user ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <Login onLogin={handleLogin} />
-                )
+                user
+                  ? <Navigate to="/" replace />
+                  : <Login onLogin={handleLogin} />
               }
             />
 
-            {/* Register page (no onRegister prop) */}
+            {/* Register */}
             <Route
               path="/register"
               element={
-                user ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <Register />
-                )
+                user
+                  ? <Navigate to="/" replace />
+                  : <Register />
               }
             />
           </Routes>
@@ -113,7 +125,6 @@ export default function App() {
   );
 }
 
-// A tiny component to avoid cluttering the header above:
 function ThemeToggle() {
   const { theme, toggle } = useContext(ThemeContext);
   return (

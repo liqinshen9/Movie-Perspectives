@@ -234,3 +234,48 @@ body {
   background: var(--button-hover);
 }
 
+.avatar-link {
+  text-decoration: none;
+  margin-right: 0.5rem;
+}
+
+.avatar-small {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.username-link {
+  margin-right: 1rem;
+  font-weight: bold;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-small {
+  margin-right: 0.5rem; 
+}
+
+.username-link {
+  margin-right: auto;     
+}
+
+.review-date {
+  margin-right: 1rem;     
+}
+
+.stars {
+}
+

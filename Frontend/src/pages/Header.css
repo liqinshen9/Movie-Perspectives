@@ -1,0 +1,36 @@
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.greeting {
+  margin-right: 0.5rem;
+}
+.avatar-link {
+  text-decoration: none;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--button-bg);
+  color: var(--button-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.logout-button {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}

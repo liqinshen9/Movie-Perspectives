@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type FormEvent } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getMovieById } from '../api/movieService'
 import {
   getAllReviews,
@@ -44,7 +44,6 @@ export default function MovieDetail({ username }: MovieDetailProps) {
   const [replyTo, setReplyTo] = useState<number | null>(null)
   const [replyText, setReplyText] = useState('')
 
-  // load all reviews
   const load = async () => {
     try {
       const all = await getAllReviews(movieId)
@@ -60,7 +59,6 @@ export default function MovieDetail({ username }: MovieDetailProps) {
     load()
   }, [movieId])
 
-  // top-level review
   const submitReview = async (e: FormEvent) => {
     e.preventDefault()
     try {
@@ -73,7 +71,6 @@ export default function MovieDetail({ username }: MovieDetailProps) {
     }
   }
 
-  // reply to one review
   const submitReply = async (e: FormEvent) => {
     e.preventDefault()
     if (replyTo == null) return
@@ -93,7 +90,6 @@ export default function MovieDetail({ username }: MovieDetailProps) {
     }
   }
 
-  // delete
   const onDelete = async (id: number, author: string) => {
     if (author !== username) return
     await deleteReview(id, username)
@@ -147,14 +143,12 @@ export default function MovieDetail({ username }: MovieDetailProps) {
               ))}
             </select>
           </label>
-
           <textarea
             placeholder="Please leave a review"
             value={text}
             onChange={e => setText(e.target.value)}
             rows={4}
           />
-
           <button type="submit" className="submit-button">
             Submit
           </button>
@@ -188,11 +182,17 @@ function ReviewCard({
   onDelete
 }: ReviewCardProps) {
   const isReplying = replyTo === node.id
+  const initial = node.username.charAt(0).toUpperCase()
 
   return (
     <div className="review-card" style={{ marginLeft: level * 20 }}>
       <div className="review-header">
-        <strong>{node.username}</strong>
+        <Link to={`/profile/${node.username}`} className="avatar-link">
+          <div className="avatar-small">{initial}</div>
+        </Link>
+        <Link to={`/profile/${node.username}`} className="username-link">
+          {node.username}
+        </Link>
         {node.reviewDate && (
           <span className="review-date">
             {new Date(node.reviewDate).toLocaleString()}
