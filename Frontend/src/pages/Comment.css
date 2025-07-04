@@ -1,0 +1,21 @@
+/* in Comment.css */
+.comment-card {
+  margin-left: 1rem;
+  border-left: 2px solid var(--input-border);
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+.replies-list {
+  margin-top: .5rem;
+}
+.reply-form {
+  margin-top: .5rem;
+}
+.comment-actions button {
+  margin-right: .5rem;
+  font-size: .85rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
