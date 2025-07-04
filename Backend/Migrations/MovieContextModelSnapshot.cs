@@ -61,6 +61,9 @@ namespace MoviePerspectives.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -77,6 +80,10 @@ namespace MoviePerspectives.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("ParentId");
+
                     b.ToTable("Reviews");
                 });
 
@@ -92,6 +99,29 @@ namespace MoviePerspectives.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MoviePerspectives.Models.Review", b =>
+                {
+                    b.HasOne("MoviePerspectives.Models.Movie", "Movies")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MoviePerspectives.Models.Review", "Parent")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Movies");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("MoviePerspectives.Models.Review", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }
