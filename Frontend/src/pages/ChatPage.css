@@ -1,13 +1,23 @@
-/* src/pages/ChatPage.css */
+:root {
+  /* Example CSS variables — adjust to match your theme */
+  --card-bg: #ffffff;
+  --input-bg: #f9f9f9;
+  --input-border: #ddd;
+  --button-bg: #007bff;
+  --button-text: #fff;
+  --button-hover: #0056b3;
+  --text: #333;
+  --muted: #666;
+  --danger: #d9534f;
+}
 
-/* ─── Container & Header ─── */
 .chat-page {
   max-width: 600px;
   margin: 2rem auto;
   padding: 1.5rem;
   background: var(--card-bg);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
   color: var(--text);
 }
@@ -16,7 +26,6 @@
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  color: var(--text);
 }
 
 /* ─── Scrollable History ─── */
@@ -30,15 +39,20 @@
   box-sizing: border-box;
 }
 
-/* ─── Individual Messages ─── */
-.chat-msg {
-  clear: both;
-  display: inline-block;
-  max-width: 75%;
-  margin-bottom: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 12px;
+/* ─── Container & Spacing ─── */
+.chat-msg-container {
   position: relative;
+  margin: 0.75rem 0; /* ↑ gap above/below each message */
+  clear: both;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* ─── Message Bubble ─── */
+.chat-msg {
+  padding: 0.75rem;
+  border-radius: 12px;
+  max-width: 75%;
   word-wrap: break-word;
 }
 
@@ -52,7 +66,6 @@
 .chat-msg .text {
   display: block;
   margin-bottom: 0.25rem;
-  color: inherit;
 }
 
 .chat-msg time {
@@ -66,18 +79,35 @@
 .chat-msg.me {
   background: var(--button-bg);
   color: var(--button-text);
-  float: right;
+  margin-left: auto;
   border-bottom-right-radius: 2px;
-  margin-left: 25%;
 }
 
 .chat-msg.them {
   background: var(--card-bg);
   border: 1px solid var(--input-border);
   color: var(--text);
-  float: left;
   border-bottom-left-radius: 2px;
-  margin-right: 25%;
+}
+
+/* ─── Recall Button ─── */
+.recall-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--muted);
+  margin-left: 0.5rem;
+  align-self: center;
+  padding: 0;
+}
+
+.chat-msg-container.them .recall-button {
+  display: none; /* no recall on others' messages */
+}
+
+.recall-button:hover {
+  color: var(--danger);
 }
 
 /* ─── Input Row ─── */

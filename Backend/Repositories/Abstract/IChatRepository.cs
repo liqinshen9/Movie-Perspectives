@@ -6,5 +6,9 @@ namespace MoviePerspectives.Repositories.Abstract
     {
         Task<IList<ChatMessage>> GetConversationAsync(string userA, string userB);
         Task<ChatMessage> AddAsync(ChatMessage message);
+
+        // ← New:
+        Task<ChatMessage?> GetByIdAsync(int id);
+        Task DeleteAsync(int id);
     }
 }

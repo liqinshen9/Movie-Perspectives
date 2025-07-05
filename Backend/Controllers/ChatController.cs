@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MoviePerspectives.Context;
 using MoviePerspectives.Models;
+using MoviePerspectives.Repositories.Abstract;
 
 namespace MoviePerspectives.Controllers
 {
@@ -9,10 +8,9 @@ namespace MoviePerspectives.Controllers
     [Route("api/chat")]
     public class ChatController : ControllerBase
     {
-        private readonly MovieContext _ctx;
-        public ChatController(MovieContext ctx) => _ctx = ctx;
+        private readonly IChatRepository _repo;
+        public ChatController(IChatRepository repo) => _repo = repo;
 
-        // GET /api/chat/{withUser}?me={currentUser}
         [HttpGet("{withUser}")]
         public async Task<IActionResult> GetHistory(
             string withUser,
@@ -20,36 +18,42 @@ namespace MoviePerspectives.Controllers
         )
         {
             if (string.IsNullOrEmpty(me))
-                return BadRequest("me is required");
+                return BadRequest("me query‐param is required");
 
-            var msgs = await _ctx.ChatMessages
-                .Where(m =>
-                   (m.FromUsername == me!     && m.ToUsername == withUser) ||
-                   (m.FromUsername == withUser && m.ToUsername == me!)
-                )
-                .OrderBy(m => m.SentAt)
-                .ToListAsync();
-
-            return Ok(msgs);
+            var conv = await _repo.GetConversationAsync(me, withUser);
+            return Ok(conv);
         }
 
-        // POST /api/chat
         [HttpPost]
         public async Task<IActionResult> PostMessage([FromBody] ChatMessage dto)
         {
-            // you might want to validate dto.FromUsername, dto.ToUsername not null...
+            if (string.IsNullOrEmpty(dto.FromUsername) || string.IsNullOrEmpty(dto.ToUsername))
+                return BadRequest("FromUsername and ToUsername are required");
 
-            dto.Id     = 0;                   // EF will pick new
-            dto.SentAt = DateTime.UtcNow;     // server‐side timestamp
-
-            await _ctx.ChatMessages.AddAsync(dto);
-            await _ctx.SaveChangesAsync();
-
+            var saved = await _repo.AddAsync(dto);
             return CreatedAtAction(
-              nameof(GetHistory),
-              new { withUser = dto.ToUsername, me = dto.FromUsername },
-              dto
+                nameof(GetHistory),
+                new { withUser = saved.ToUsername, me = saved.FromUsername },
+                saved
             );
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RecallMessage(int id, [FromQuery] string? me)
+        {
+            if (string.IsNullOrEmpty(me))
+                return BadRequest("me query-param is required");
+
+            var msg = await _repo.GetByIdAsync(id);
+            if (msg == null) 
+                return NotFound();
+
+            if (msg.FromUsername != me) 
+                return Forbid();
+
+            await _repo.DeleteAsync(id);
+            return NoContent();
+        }
+
     }
 }
