@@ -1,14 +1,44 @@
+.site-header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--input-border);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .header-nav {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+
+/* Style all nav links */
+.header-nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Hover state for nav links */
+.header-nav a:hover {
+  color: var(--button-hover);
+}
+
+/* Optional: indicate "active" route */
+.header-nav a.active {
+  border-bottom: 2px solid var(--button-bg);
+}
+
+/* Greeting, avatar, logout & theme toggle stay the same */
 .greeting {
   margin-right: 0.5rem;
 }
+
 .avatar-link {
   text-decoration: none;
 }
+
 .avatar {
   width: 32px;
   height: 32px;
@@ -20,17 +50,23 @@
   justify-content: center;
   font-weight: bold;
 }
-.logout-button {
-  background: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
+
+.logout-button,
 .theme-toggle {
   background: none;
   border: none;
-  font-size: 1.25rem;
   cursor: pointer;
+  color: var(--text);
 }
+
+.logout-button {
+  padding: 0.25rem 0.5rem;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border-radius: 4px;
+}
+
+.theme-toggle {
+  font-size: 1.25rem;
+}
+

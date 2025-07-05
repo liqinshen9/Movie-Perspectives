@@ -7,7 +7,8 @@ import MovieDetail from './pages/MovieDetail'
 import Login       from './pages/Login'
 import Register    from './pages/Register'
 import Profile     from './pages/Profile'
-import ChatPage    from './pages/Chatpage'      
+import ChatPage    from './pages/ChatPage'
+    
 import { getCurrentUser, logout } from './api/authService'
 import { getAvatarColor }         from './utils/avatar'
 

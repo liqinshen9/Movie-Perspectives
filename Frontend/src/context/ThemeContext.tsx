@@ -1,31 +1,25 @@
-// src/contexts/ThemeContext.tsx
+// ThemeContext.tsx (excerpt)
 import React, { createContext, useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark';
-
-export const ThemeContext = createContext<{
-  theme: Theme;
-  toggle: () => void;
-}>({
+export const ThemeContext = createContext<{ theme:string; toggle:()=>void }>({
   theme: 'light',
-  toggle: () => {},
+  toggle: () => {}
 });
 
-export const ThemeProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(() =>
-    (localStorage.getItem('theme') as Theme) || 'light'
-  );
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<'light'|'dark'>('light');
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    document.body.setAttribute('data-theme', theme);
   }, [theme]);
 
-  const toggle = () => setTheme(t => (t === 'light' ? 'dark' : 'light'));
+  function toggle() {
+    setTheme(t => t === 'light' ? 'dark' : 'light');
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggle }}>
       {children}
     </ThemeContext.Provider>
   );
-};
+}
