@@ -11,7 +11,7 @@ namespace MoviePerspectives.Context
         public DbSet<User>   Users   { get; set; } = default!;
         public DbSet<Review> Reviews { get; set; } = default!;
         public DbSet<Follow> Follows { get; set; } = default!;
-
+        public DbSet<ChatMessage> ChatMessages { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

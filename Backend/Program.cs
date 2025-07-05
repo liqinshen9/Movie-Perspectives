@@ -25,6 +25,7 @@ builder.Services.AddScoped<IMovieRepository, EfMovieRepository>();
 builder.Services.AddScoped<IReviewRepository, EfReviewRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<IFollowRepository, EfFollowRepository>();
+builder.Services.AddScoped<IChatRepository, EfChatRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
@@ -32,6 +33,8 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
      .AllowAnyHeader()
      .AllowAnyMethod()
 ));
+builder.Services.AddAuthentication(/* ... your JWT or cookie config ... */);
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -75,6 +78,10 @@ using (var scope = app.Services.CreateScope())
 }
 
 
+app.UseRouting();
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 app.Run();

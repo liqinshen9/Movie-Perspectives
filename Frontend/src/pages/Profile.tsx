@@ -12,7 +12,6 @@ const AVATAR_COLORS = [
 ]
 
 function getAvatarColor(name: string): string {
-  // simple char code sum → index
   let sum = 0
   for (let i = 0; i < name.length; i++) sum += name.charCodeAt(i)
   return AVATAR_COLORS[sum % AVATAR_COLORS.length]
@@ -21,14 +20,13 @@ function getAvatarColor(name: string): string {
 export default function Profile() {
   const { username } = useParams<{ username: string }>()
   const currentUser = getCurrentUser()
-  const [followers, setFollowers] = useState<string[]>([])
-  const [following, setFollowing] = useState<string[]>([])
+  const [followers, setFollowers]     = useState<string[]>([])
+  const [following, setFollowing]     = useState<string[]>([])
   const [isFollowing, setIsFollowing] = useState(false)
-  const [intro, setIntro] = useState('')
-  const [draftIntro, setDraftIntro] = useState('')
+  const [intro, setIntro]             = useState('')
+  const [draftIntro, setDraftIntro]   = useState('')
   const [editingIntro, setEditingIntro] = useState(false)
 
-  // loads intro + lists
   const loadProfile = async () => {
     if (!username) return
 
@@ -56,7 +54,6 @@ export default function Profile() {
     loadProfile().catch(console.error)
   }, [username])
 
-  // save intro
   const saveIntro = async (e: FormEvent) => {
     e.preventDefault()
     if (!username) return
@@ -73,7 +70,6 @@ export default function Profile() {
     setEditingIntro(false)
   }
 
-  // follow / unfollow
   const toggleFollow = async () => {
     if (!currentUser || !username) return
     const res = await fetch(
@@ -91,7 +87,6 @@ export default function Profile() {
     await loadProfile()
   }
 
-  // remove a follower (when viewing your own profile)
   const removeFollower = async (f: string) => {
     if (!username) return
     const res = await fetch(
@@ -109,7 +104,7 @@ export default function Profile() {
     await loadProfile()
   }
 
-  const initial = username?.charAt(0).toUpperCase() || '?'
+  const initial     = username?.charAt(0).toUpperCase() || '?'
   const avatarColor = getAvatarColor(username!)
 
   return (
@@ -126,12 +121,20 @@ export default function Profile() {
         <div className="profile-info">
           <p><strong>Username:</strong> {username}</p>
           {currentUser && currentUser !== username && (
-            <button
-              className={`follow-button ${isFollowing ? 'following' : ''}`}
-              onClick={toggleFollow}
-            >
-              {isFollowing ? 'Unfollow' : 'Follow'}
-            </button>
+            <>
+              <button
+                className={`follow-button ${isFollowing ? 'following' : ''}`}
+                onClick={toggleFollow}
+              >
+                {isFollowing ? 'Unfollow' : 'Follow'}
+              </button>
+              {/* ← NEW: Message button */}
+              <Link to={`/chat/${username}`}>
+                <button style={{ marginLeft: 8 }}>
+                  Message
+                </button>
+              </Link>
+            </>
           )}
         </div>
       </div>
