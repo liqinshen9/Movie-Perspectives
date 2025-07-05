@@ -10,6 +10,9 @@ import Register    from './pages/Register';
 import Profile     from './pages/Profile';    // ← new
 import { getCurrentUser, logout } from './api/authService';
 
+// ← NEW: bring in the same helper you use in MovieDetail.tsx:
+import { getAvatarColor } from './utils/avatar';
+
 export default function App() {
   const [user, setUser] = useState<string | null>(getCurrentUser());
 
@@ -24,6 +27,8 @@ export default function App() {
 
   // Capital letter for avatar
   const avatarLetter = user ? user.charAt(0).toUpperCase() : '';
+  // ← NEW: compute its background exactly the same way:
+  const avatarBg = user ? getAvatarColor(user) : '#3498db';
 
   return (
     <ThemeProvider>
@@ -45,7 +50,7 @@ export default function App() {
               <>
                 <span style={{ marginRight: 12 }}>Hello, {user}</span>
 
-                {/* avatar link */}
+                {/* avatar link, now dynamic color */}
                 <Link
                   to={`/profile/${user}`}
                   style={{
@@ -55,9 +60,9 @@ export default function App() {
                     lineHeight: '32px',
                     textAlign: 'center',
                     borderRadius: '50%',
-                    backgroundColor: '#3498db',
-                    color: '#ffffff',
-                    textDecoration: 'none',
+                    backgroundColor: avatarBg,
+                    color: '#fff',
+                    textDecoration: 'none',   // no underline
                     fontWeight: 'bold',
                     marginRight: 12,
                   }}
@@ -83,10 +88,8 @@ export default function App() {
 
         <main style={{ padding: 20 }}>
           <Routes>
-            {/* Home */}
             <Route path="/" element={<Home username={user ?? undefined} />} />
 
-            {/* Movie details (requires login) */}
             <Route
               path="/movies/:id"
               element={
@@ -96,10 +99,8 @@ export default function App() {
               }
             />
 
-            {/* Profile page */}
             <Route path="/profile/:username" element={<Profile />} />
 
-            {/* Login */}
             <Route
               path="/login"
               element={
@@ -109,7 +110,6 @@ export default function App() {
               }
             />
 
-            {/* Register */}
             <Route
               path="/register"
               element={

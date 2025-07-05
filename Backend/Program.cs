@@ -24,6 +24,7 @@ builder.Services.AddDbContext<MovieContext>(opts =>
 builder.Services.AddScoped<IMovieRepository, EfMovieRepository>();
 builder.Services.AddScoped<IReviewRepository, EfReviewRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+builder.Services.AddScoped<IFollowRepository, EfFollowRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
