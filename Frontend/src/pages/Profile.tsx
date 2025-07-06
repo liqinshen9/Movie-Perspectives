@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom'
 import { getCurrentUser } from '../api/authService'
 import './Profile.css'
 
-// A small palette; usernames hash into one of these
 const AVATAR_COLORS = [
   '#e57373', '#f06292', '#ba68c8',
   '#9575cd', '#7986cb', '#4fc3f7',
@@ -30,21 +29,20 @@ export default function Profile() {
   const loadProfile = async () => {
     if (!username) return
 
-    // introduction
+
     const introRes = await fetch(`/api/user/${encodeURIComponent(username)}/introduction`)
     if (introRes.ok) {
       const { introduction } = await introRes.json()
       setIntro(introduction || '')
     }
 
-    // followers
+ 
     const fRes = await fetch(`/api/user/${encodeURIComponent(username)}/followers`)
     if (!fRes.ok) throw new Error('Failed to load followers')
     const fData: string[] = await fRes.json()
     setFollowers(fData)
     setIsFollowing(!!currentUser && fData.includes(currentUser))
 
-    // following
     const foRes = await fetch(`/api/user/${encodeURIComponent(username)}/following`)
     if (!foRes.ok) throw new Error('Failed to load following')
     setFollowing(await foRes.json())
@@ -128,7 +126,7 @@ export default function Profile() {
               >
                 {isFollowing ? 'Unfollow' : 'Follow'}
               </button>
-              {/* ← NEW: Message button */}
+              {/*Message button */}
               <Link to={`/chat/${username}`}>
                 <button style={{ marginLeft: 8 }}>
                   Message

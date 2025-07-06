@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using MoviePerspectives.Context;
 using MoviePerspectives.Models;
 using MoviePerspectives.Repositories.Abstract;
-using System.IO;               // for StreamReader
-using CsvHelper;               // for CsvReader
+using System.IO;              
+using CsvHelper;               
 using System.Globalization;  
 
 namespace MoviePerspectives.Repositories.Concrete
@@ -25,7 +25,6 @@ namespace MoviePerspectives.Repositories.Concrete
             using var csv    = new CsvReader(reader, CultureInfo.InvariantCulture);
             var records      = csv.GetRecords<Movie>().ToList();
 
-            // wipe and re-seed
             _ctx.Movies.RemoveRange(_ctx.Movies);
             _ctx.Movies.AddRange(records);
             _ctx.SaveChanges();

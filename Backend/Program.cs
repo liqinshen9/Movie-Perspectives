@@ -33,7 +33,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
      .AllowAnyHeader()
      .AllowAnyMethod()
 ));
-builder.Services.AddAuthentication(/* ... your JWT or cookie config ... */);
+builder.Services.AddAuthentication(/* ... JWT or cookie config ... */);
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

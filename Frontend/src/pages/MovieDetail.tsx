@@ -10,7 +10,7 @@ import type { Movie } from '../models/Movie';
 import type { Review } from '../models/Review';
 import './MovieDetail.css';
 
-// helper that picks a consistent color per username
+
 import { getAvatarColor } from '../utils/avatar';
 
 interface MovieDetailProps {

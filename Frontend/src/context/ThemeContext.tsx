@@ -1,4 +1,3 @@
-// ThemeContext.tsx (excerpt)
 import React, { createContext, useState, useEffect } from 'react';
 
 export const ThemeContext = createContext<{ theme:string; toggle:()=>void }>({

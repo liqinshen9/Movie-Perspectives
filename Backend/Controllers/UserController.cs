@@ -13,7 +13,6 @@ namespace MoviePerspectives.Controllers
         private readonly MovieContext _ctx;
         public UserController(MovieContext ctx) => _ctx = ctx;
 
-        // GET /api/user/{username}/followers
         [HttpGet("{username}/followers")]
         public async Task<IActionResult> GetFollowers(string username)
         {
@@ -24,7 +23,6 @@ namespace MoviePerspectives.Controllers
             return Ok(list);
         }
 
-        // GET /api/user/{username}/following
         [HttpGet("{username}/following")]
         public async Task<IActionResult> GetFollowing(string username)
         {
@@ -35,7 +33,6 @@ namespace MoviePerspectives.Controllers
             return Ok(list);
         }
 
-        // POST /api/user/{username}/follow
         [HttpPost("{username}/follow")]
         public async Task<IActionResult> Follow(string username, [FromBody] FollowDto dto)
         {
@@ -53,7 +50,6 @@ namespace MoviePerspectives.Controllers
             return Ok();
         }
 
-        // DELETE /api/user/{username}/follow
         [HttpDelete("{username}/follow")]
         public async Task<IActionResult> Unfollow(string username, [FromBody] FollowDto dto)
         {
@@ -86,7 +82,6 @@ namespace MoviePerspectives.Controllers
             return Ok(new { introduction = user.Introduction });
         }
 
-        // ← NEW: PUT /api/user/{username}/introduction
         [HttpPut("{username}/introduction")]
         public async Task<IActionResult> SetIntroduction(string username, [FromBody] IntroductionDto dto)
         {

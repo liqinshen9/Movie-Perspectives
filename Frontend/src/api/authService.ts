@@ -1,4 +1,3 @@
-// reads + writes to localStorage under the hood
 export function login(username: string, password: string) {
   return fetch('/api/auth/login', {
     method: 'POST',

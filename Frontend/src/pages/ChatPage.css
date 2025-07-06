@@ -1,5 +1,4 @@
 :root {
-  /* Example CSS variables — adjust to match your theme */
   --card-bg: #ffffff;
   --input-bg: #f9f9f9;
   --input-border: #ddd;
@@ -28,7 +27,6 @@
   font-size: 1.5rem;
 }
 
-/* ─── Scrollable History ─── */
 .chat-history {
   height: 300px;
   overflow-y: auto;
@@ -39,16 +37,15 @@
   box-sizing: border-box;
 }
 
-/* ─── Container & Spacing ─── */
 .chat-msg-container {
   position: relative;
-  margin: 0.75rem 0; /* ↑ gap above/below each message */
+  margin: 0.75rem 0; 
   clear: both;
   display: flex;
   align-items: flex-start;
 }
 
-/* ─── Message Bubble ─── */
+
 .chat-msg {
   padding: 0.75rem;
   border-radius: 12px;
@@ -75,7 +72,6 @@
   text-align: right;
 }
 
-/* ─── Sent vs Received ─── */
 .chat-msg.me {
   background: var(--button-bg);
   color: var(--button-text);
@@ -90,7 +86,6 @@
   border-bottom-left-radius: 2px;
 }
 
-/* ─── Recall Button ─── */
 .recall-button {
   background: none;
   border: none;
@@ -103,14 +98,13 @@
 }
 
 .chat-msg-container.them .recall-button {
-  display: none; /* no recall on others' messages */
+  display: none; 
 }
 
 .recall-button:hover {
   color: var(--danger);
 }
 
-/* ─── Input Row ─── */
 .chat-input {
   display: flex;
   margin-top: 1rem;

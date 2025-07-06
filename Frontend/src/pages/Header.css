@@ -1,72 +1,97 @@
+:root {
+  --card-bg:     #1e2a38;
+  --input-border:#444;
+  --button-bg:   #2d4373;
+  --button-text: #fff;
+  --button-hover:#3b58a1;
+  --text:        #e0e6ed;
+}
+
 .site-header {
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--input-border);
-  padding: 0.5rem 1rem;
-  display: flex;
-  align-items: center;
+  background:      var(--card-bg);
+  border-bottom:   1px solid var(--input-border);
+  padding:         0.75rem 1rem;
+  display:         flex;
+  align-items:     center;
   justify-content: space-between;
 }
 
+.logo {
+  margin:    0;
+  font-size: 1.25rem;
+  color:     var(--text);
+}
+
 .header-nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  display:       flex;
+  align-items:   center;
+
 }
 
-/* Style all nav links */
-.header-nav a {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
+
+.nav-link,
+.logout-button {
+  display:        inline-flex;
+  align-items:    center;
+  padding:        0.4rem 0.8rem;
+  border-radius:  4px;
+  background:     var(--button-bg);
+  color:          var(--button-text);
+  text-decoration:none;
+  font-weight:    500;
+  border:         none;
+  cursor:         pointer;
+  transition:     background 0.2s ease;
 }
 
-/* Hover state for nav links */
-.header-nav a:hover {
-  color: var(--button-hover);
+
+.nav-link:hover,
+.logout-button:hover {
+  background: var(--button-hover);
 }
 
-/* Optional: indicate "active" route */
-.header-nav a.active {
-  border-bottom: 2px solid var(--button-bg);
+
+.nav-link.active {
+  background: var(--button-hover);
 }
 
-/* Greeting, avatar, logout & theme toggle stay the same */
-.greeting {
+
+.nav-link  { margin-right: 1rem; }
+.logout-button { margin-right: 1rem; }
+
+
+.nav-link svg {
   margin-right: 0.5rem;
+  
+}
+
+
+.greeting {
+  margin: 0 0.25rem 0 0;
+  color:  var(--text);
 }
 
 .avatar-link {
+  margin-right: 1rem;
   text-decoration: none;
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--button-bg);
-  color: var(--button-text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+  width:          32px;
+  height:         32px;
+  border-radius:  50%;
+  background:     var(--button-bg);
+  color:          var(--button-text);
+  display:        flex;
+  align-items:    center;
+  justify-content:center;
+  font-weight:    bold;
 }
 
-.logout-button,
 .theme-toggle {
   background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text);
+  border:     none;
+  cursor:     pointer;
+  font-size:  1.25rem;
+  color:      var(--text);
 }
-
-.logout-button {
-  padding: 0.25rem 0.5rem;
-  background: var(--button-bg);
-  color: var(--button-text);
-  border-radius: 4px;
-}
-
-.theme-toggle {
-  font-size: 1.25rem;
-}
-

@@ -1,4 +1,3 @@
-// src/models/Movie.ts
 import type { Review } from './Review';
 
 export interface Movie {

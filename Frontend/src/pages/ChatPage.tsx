@@ -16,7 +16,7 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
   if (!currentUser) return <Navigate to="/login" replace />;
   if (!withUser)    return <p>No chat partner specified.</p>;
 
-  // 1. Fetch & sort oldest→newest
+
   const load = async () => {
     const msgs = await getHistory(currentUser, withUser);
     msgs.sort((a, b) =>
@@ -25,32 +25,30 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
     setHistory(msgs);
   };
 
-  // reload when conversation partner changes
   useEffect(() => {
     load().catch(console.error);
   }, [withUser]);
 
-  // 2. After every history update, scroll down
+ 
   useEffect(() => {
     if (boxRef.current) {
       boxRef.current.scrollTo(0, boxRef.current.scrollHeight);
     }
   }, [history]);
 
-  // send new message, then reload
   const send = async (e: FormEvent) => {
     e.preventDefault();
     if (!draft.trim()) return;
     try {
       await postMessage(currentUser, withUser, draft);
       setDraft('');
-      await load();   // triggers `history` change → scroll effect
+      await load();  
     } catch (err: any) {
       alert(`Failed to send: ${err.message}`);
     }
   };
 
-  // recall (delete) your own message
+  
   const recall = async (id: number) => {
     if (!confirm('Recall this message?')) return;
     const res = await fetch(
@@ -58,7 +56,7 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
       { method: 'DELETE' }
     );
     if (res.ok) {
-      await load();  // reload & scroll
+      await load();  
     } else {
       const text = await res.text().catch(() => res.statusText);
       alert(`Failed to recall: ${text}`);

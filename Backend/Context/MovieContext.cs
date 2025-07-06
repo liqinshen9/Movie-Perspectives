@@ -16,18 +16,15 @@ namespace MoviePerspectives.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            // ─── Review parent/replies ─────────────────────────────────────────
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Parent)
                 .WithMany(r => r.Replies)
                 .HasForeignKey(r => r.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ─── Follow entity ──────────────────────────────────────────────────
             modelBuilder.Entity<Follow>()
                 .HasKey(f => new { f.FollowerUsername, f.FolloweeUsername });
 
-            // One side Restrict to avoid multiple cascade paths
             modelBuilder.Entity<Follow>()
                 .HasOne(f => f.Follower)
                 .WithMany(u => u.Following)

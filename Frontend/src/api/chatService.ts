@@ -1,4 +1,3 @@
-// src/api/chatService.ts
 export interface ChatMessage {
   id: number;
   fromUsername: string;

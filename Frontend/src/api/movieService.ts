@@ -1,4 +1,3 @@
-// src/api/movieService.ts
 import type { Movie }  from '../models/Movie';
 import type { Review } from '../models/Review';
 

@@ -1,4 +1,3 @@
-// a small palette of distinguishable hues
 export const AVATAR_COLORS = [
   '#e57373', '#f06292', '#ba68c8',
   '#9575cd', '#7986cb', '#4fc3f7',
@@ -6,9 +5,7 @@ export const AVATAR_COLORS = [
   '#aed581', '#ffb74d', '#ff8a65'
 ];
 
-/**
- * Deterministically pick one of the above colors from a username.
- */
+
 export function getAvatarColor(name: string): string {
   let sum = 0;
   for (let i = 0; i < name.length; i++) {

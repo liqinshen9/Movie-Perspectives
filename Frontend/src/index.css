@@ -1,11 +1,10 @@
-/* index.css */
 
 /* 1. Light theme defaults */
 :root {
-  --bg:           #f3f4f6;    /* page background */
-  --text:         #1f2937;    /* main text */
-  --muted:        #6b7280;    /* secondary text */
-  --card-bg:      #ffffff;    /* cards, detail pages */
+  --bg:           #f3f4f6;   
+  --text:         #1f2937;   
+  --muted:        #6b7280;    
+  --card-bg:      #ffffff;    
   --input-bg:     #ffffff;
   --input-border: #d1d5db;
   --button-bg:    #3b82f6;
@@ -14,21 +13,21 @@
   --danger:       #dc2626;
 }
 
-/* 2. Dark theme overrides */
+
 [data-theme="dark"] {
-  --bg:           #1f2937;    /* dark gray */
-  --text:         #e5e7eb;    /* light gray */
-  --muted:        #9ca3af;    /* mid gray */
-  --card-bg:      #374151;    /* darker card */
+  --bg:           #1f2937;   
+  --text:         #e5e7eb;    
+  --muted:        #9ca3af;    
+  --card-bg:      #374151;  
   --input-bg:     #4b5563;
   --input-border: #6b7280;
-  --button-bg:    #2563eb;    /* slightly brighter */
+  --button-bg:    #2563eb;    
   --button-hover: #1e40af;
   --button-text:  #ffffff;
   --danger:       #f87171;
 }
 
-/* 3. Apply to body */
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -36,7 +35,7 @@ body {
   font-family: sans-serif;
 }
 
-/* 4. Header */
+
 .site-header {
   background: var(--card-bg);
   border-bottom: 1px solid var(--input-border);
@@ -55,7 +54,7 @@ body {
   color: var(--text);
 }
 
-/* 5. MovieDetail page */
+
 .movie-detail-page {
   max-width: 800px;
   margin: 2rem auto;
@@ -69,5 +68,4 @@ body {
   color: var(--text);
 }
 
-/* 6. ChatPage already uses var(--card-bg), var(--input-bg), etc. */
 

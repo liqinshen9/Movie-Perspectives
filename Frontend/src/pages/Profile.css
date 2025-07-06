@@ -45,19 +45,19 @@
   gap: 0.5rem;
 }
 
-/* ← Spread the two sections far apart */
+
 .lists {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 }
 
-/* Expand each section to fill half the width */
+
 .lists > section {
   flex: 1;
 }
 
-/* Lists styling */
+
 section ul {
   list-style: none;
   padding: 0;

@@ -28,7 +28,7 @@
   --danger-hover: #992d22;
 }
 
-/* ─────────── Container ─────────── */
+
 .movie-detail {
   max-width: 700px;
   margin: 2rem auto;
@@ -46,14 +46,14 @@
   color: var(--muted);
 }
 
-/* ─────────── Title ─────────── */
+
 .title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 1.5rem;
 }
 
-/* ─────────── Poster ─────────── */
+
 .poster-container {
   display: flex;
   justify-content: center;
@@ -66,14 +66,13 @@
   border-radius: 8px;
 }
 
-/* ─────────── Intro ─────────── */
+
 .movie-intro {
   line-height: 1.6;
   color: var(--muted);
   margin-bottom: 2rem;
 }
 
-/* ─────────── Sections ─────────── */
 .reviews-section,
 .review-form-section {
   margin-bottom: 2rem;
@@ -86,7 +85,7 @@
   padding-bottom: 0.25rem;
 }
 
-/* ─────────── Review List ─────────── */
+
 .reviews-list {
   display: flex;
   flex-direction: column;
@@ -103,21 +102,20 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* ─────────── Review Header ─────────── */
 .review-header {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-/* Avatar link – no underline ever */
+
 .avatar-link,
 .avatar-link:hover,
 .avatar-link:focus {
   text-decoration: none !important;
 }
 
-/* Small avatar circle */
+
 .avatar-small {
   width: 32px;
   height: 32px;
@@ -129,10 +127,10 @@
   justify-content: center;
   font-size: 1rem;
   font-weight: bold;
-  margin-right: 0.75rem;
+  margin-right: 0 rem;
 }
 
-/* Username next to avatar */
+
 .username-link {
   text-decoration: none;
   color: var(--text);
@@ -140,7 +138,7 @@
   margin-right: auto;
 }
 
-/* Date and stars */
+
 .review-date {
   font-size: 0.85rem;
   color: var(--muted);
@@ -150,12 +148,12 @@
   color: #f5a623;
 }
 
-/* ─────────── Review Text ─────────── */
+
 .review-text {
   margin: 0.5rem 0;
 }
 
-/* ─────────── Actions ─────────── */
+
 .review-actions {
   display: flex;
   gap: 0.5rem;
@@ -177,7 +175,6 @@
   background: var(--danger-hover);
 }
 
-/* ─────────── Reply Form ─────────── */
 .reply-form {
   display: flex;
   flex-direction: column;
@@ -206,7 +203,7 @@
   background: var(--button-hover);
 }
 
-/* ─────────── Review Form ─────────── */
+
 .review-form {
   display: flex;
   flex-direction: column;
@@ -245,7 +242,7 @@
   background: var(--button-hover);
 }
 
-/* ─────────── Page Background ─────────── */
+
 body {
   background-color: var(--bg);
 }
