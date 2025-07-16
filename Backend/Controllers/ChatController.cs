@@ -30,6 +30,9 @@ namespace MoviePerspectives.Controllers
             if (string.IsNullOrEmpty(dto.FromUsername) || string.IsNullOrEmpty(dto.ToUsername))
                 return BadRequest("FromUsername and ToUsername are required");
 
+            // **Only added this line** to stamp the real send time
+            dto.SentAt = DateTime.UtcNow;
+
             var saved = await _repo.AddAsync(dto);
             return CreatedAtAction(
                 nameof(GetHistory),
@@ -45,15 +48,14 @@ namespace MoviePerspectives.Controllers
                 return BadRequest("me query-param is required");
 
             var msg = await _repo.GetByIdAsync(id);
-            if (msg == null) 
+            if (msg == null)
                 return NotFound();
 
-            if (msg.FromUsername != me) 
+            if (msg.FromUsername != me)
                 return Forbid();
 
             await _repo.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }

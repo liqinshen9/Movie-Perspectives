@@ -15,17 +15,16 @@ interface PrivateInfo {
 
 export default function ChatPage({ currentUser }: ChatPageProps) {
   const { withUser } = useParams<{ withUser: string }>()
-  const [history, setHistory]         = useState<ChatMessage[]>([])
-  const [draft,  setDraft]            = useState('')
-  const [sharedAllowed, setShared]    = useState(false)
+  const [history, setHistory] = useState<ChatMessage[]>([])
+  const [draft, setDraft] = useState('')
+  const [sharedAllowed, setSharedAllowed] = useState(false)
   const [privateInfo, setPrivateInfo] = useState<PrivateInfo | null>(null)
-  const [myShared, setMyShared]       = useState(false)
+  const [myShared, setMyShared] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
   if (!currentUser) return <Navigate to="/login" replace />
   if (!withUser)    return <p>No chat partner specified.</p>
 
-  // load chat history
   const loadHistory = async () => {
     const msgs = await getHistory(currentUser, withUser)
     msgs.sort((a, b) =>
@@ -34,15 +33,13 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
     setHistory(msgs)
   }
 
-  // load sharing permissions & private info
   const loadSharing = async () => {
-    // has partner shared with me?
     const res = await fetch(
       `/api/user/${encodeURIComponent(withUser)}/share?with=${encodeURIComponent(currentUser)}`
     )
     if (res.ok) {
       const { shared } = await res.json()
-      setShared(shared)
+      setSharedAllowed(shared)
       if (shared) {
         const pRes = await fetch(
           `/api/user/${encodeURIComponent(withUser)}/private?with=${encodeURIComponent(currentUser)}`
@@ -50,7 +47,6 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
         if (pRes.ok) setPrivateInfo(await pRes.json())
       }
     }
-    // have I shared with partner?
     const myRes = await fetch(
       `/api/user/${encodeURIComponent(currentUser)}/share?with=${encodeURIComponent(withUser)}`
     )
@@ -92,6 +88,20 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
     if (res.ok) setMyShared(!myShared)
   }
 
+  const recall = async (id: number) => {
+    if (!confirm('Recall this message?')) return
+    const res = await fetch(
+      `/api/chat/${id}?me=${encodeURIComponent(currentUser)}`,
+      { method: 'DELETE' }
+    )
+    if (res.ok) {
+      await loadHistory()
+    } else {
+      const text = await res.text().catch(() => res.statusText)
+      alert(`Failed to recall: ${text}`)
+    }
+  }
+
   return (
     <div className="chat-page">
       <h2>Chat with {withUser}</h2>
@@ -114,14 +124,21 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
         {history.map(m => {
           const mine = m.fromUsername === currentUser
           return (
-            <div key={m.id} className={`chat-msg-container ${mine ? 'me' : 'them'}`}>
+            <div
+              key={m.id}
+              className={`chat-msg-container ${mine ? 'me' : 'them'}`}
+            >
               <div className={`chat-msg ${mine ? 'me' : 'them'}`}>
                 <strong>{m.fromUsername}</strong>
                 <span className="text">{m.text}</span>
                 <time>{new Date(m.sentAt).toLocaleTimeString()}</time>
               </div>
               {mine && (
-                <button className="recall-button" onClick={() => {/* recall logic */}} aria-label="Recall message">
+                <button
+                  className="recall-button"
+                  onClick={() => recall(m.id)}
+                  aria-label="Recall message"
+                >
                   ↩
                 </button>
               )}
