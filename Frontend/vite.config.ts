@@ -7,5 +7,11 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:5077'
     }
+  },
+  // @ts-ignore: Vitest adds this at runtime
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts'
   }
 });

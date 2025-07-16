@@ -4,7 +4,6 @@ import { FiHome, FiLogIn, FiUserPlus, FiMoon, FiSun, FiLogOut } from 'react-icon
 import { ThemeContext }            from '../context/ThemeContext';
 import { getAvatarColor }          from '../utils/avatar';
 import './Header.css';
-
 interface HeaderProps {
   username: string | null;
   onLogout: () => void;
