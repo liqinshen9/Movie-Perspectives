@@ -15,11 +15,11 @@ interface PrivateInfo {
 
 export default function ChatPage({ currentUser }: ChatPageProps) {
   const { withUser } = useParams<{ withUser: string }>()
-  const [history, setHistory] = useState<ChatMessage[]>([])
-  const [draft, setDraft] = useState('')
-  const [sharedAllowed, setSharedAllowed] = useState(false)
+  const [history, setHistory]         = useState<ChatMessage[]>([])
+  const [draft,  setDraft]            = useState('')
+  const [sharedAllowed, setSharedAllowed]    = useState(false)
   const [privateInfo, setPrivateInfo] = useState<PrivateInfo | null>(null)
-  const [myShared, setMyShared] = useState(false)
+  const [myShared, setMyShared]       = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
   if (!currentUser) return <Navigate to="/login" replace />
@@ -123,22 +123,16 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
       <div ref={boxRef} className="chat-history">
         {history.map(m => {
           const mine = m.fromUsername === currentUser
+          const date = new Date(m.sentAt.endsWith('Z') ? m.sentAt : m.sentAt + 'Z')
           return (
-            <div
-              key={m.id}
-              className={`chat-msg-container ${mine ? 'me' : 'them'}`}
-            >
+            <div key={m.id} className={`chat-msg-container ${mine ? 'me' : 'them'}`}>
               <div className={`chat-msg ${mine ? 'me' : 'them'}`}>
                 <strong>{m.fromUsername}</strong>
                 <span className="text">{m.text}</span>
-                <time>{new Date(m.sentAt).toLocaleTimeString()}</time>
+                <time>{date.toLocaleTimeString()}</time>
               </div>
               {mine && (
-                <button
-                  className="recall-button"
-                  onClick={() => recall(m.id)}
-                  aria-label="Recall message"
-                >
+                <button className="recall-button" onClick={() => recall(m.id)} aria-label="Recall message">
                   ↩
                 </button>
               )}
