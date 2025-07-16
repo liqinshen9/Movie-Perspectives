@@ -16,6 +16,12 @@ function getAvatarColor(name: string): string {
   return AVATAR_COLORS[sum % AVATAR_COLORS.length]
 }
 
+interface PrivateInfo {
+  phone: string
+  email: string
+  occupation: string
+}
+
 export default function Profile() {
   const { username } = useParams<{ username: string }>()
   const currentUser = getCurrentUser()
@@ -26,26 +32,41 @@ export default function Profile() {
   const [draftIntro, setDraftIntro]   = useState('')
   const [editingIntro, setEditingIntro] = useState(false)
 
+  const [privateInfo, setPrivateInfo]     = useState<PrivateInfo>({ phone: '', email: '', occupation: '' })
+  const [draftPrivate, setDraftPrivate]   = useState<PrivateInfo>(privateInfo)
+  const [editingPrivate, setEditingPrivate] = useState(false)
+
   const loadProfile = async () => {
     if (!username) return
 
-
+    // introduction
     const introRes = await fetch(`/api/user/${encodeURIComponent(username)}/introduction`)
     if (introRes.ok) {
       const { introduction } = await introRes.json()
       setIntro(introduction || '')
     }
 
- 
+    // followers
     const fRes = await fetch(`/api/user/${encodeURIComponent(username)}/followers`)
-    if (!fRes.ok) throw new Error('Failed to load followers')
-    const fData: string[] = await fRes.json()
-    setFollowers(fData)
-    setIsFollowing(!!currentUser && fData.includes(currentUser))
+    if (fRes.ok) {
+      const fData: string[] = await fRes.json()
+      setFollowers(fData)
+      setIsFollowing(!!currentUser && fData.includes(currentUser))
+    }
 
+    // following
     const foRes = await fetch(`/api/user/${encodeURIComponent(username)}/following`)
-    if (!foRes.ok) throw new Error('Failed to load following')
-    setFollowing(await foRes.json())
+    if (foRes.ok) {
+      setFollowing(await foRes.json())
+    }
+
+    // private info (only owner)
+    if (currentUser === username) {
+      const pRes = await fetch(`/api/user/${encodeURIComponent(username)}/private`)
+      if (pRes.ok) {
+        setPrivateInfo(await pRes.json())
+      }
+    }
   }
 
   useEffect(() => {
@@ -63,9 +84,27 @@ export default function Profile() {
         body: JSON.stringify({ introduction: draftIntro })
       }
     )
-    if (!res.ok) throw new Error('Failed to save introduction')
-    setIntro(draftIntro)
-    setEditingIntro(false)
+    if (res.ok) {
+      setIntro(draftIntro)
+      setEditingIntro(false)
+    }
+  }
+
+  const savePrivate = async (e: FormEvent) => {
+    e.preventDefault()
+    if (!username) return
+    const res = await fetch(
+      `/api/user/${encodeURIComponent(username)}/private`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(draftPrivate)
+      }
+    )
+    if (res.ok) {
+      setPrivateInfo(draftPrivate)
+      setEditingPrivate(false)
+    }
   }
 
   const toggleFollow = async () => {
@@ -81,8 +120,7 @@ export default function Profile() {
         })
       }
     )
-    if (!res.ok) throw new Error('Failed to toggle follow')
-    await loadProfile()
+    if (res.ok) await loadProfile()
   }
 
   const removeFollower = async (f: string) => {
@@ -98,8 +136,7 @@ export default function Profile() {
         })
       }
     )
-    if (!res.ok) throw new Error('Failed to remove follower')
-    await loadProfile()
+    if (res.ok) await loadProfile()
   }
 
   const initial     = username?.charAt(0).toUpperCase() || '?'
@@ -110,10 +147,7 @@ export default function Profile() {
       <h2>Profile: {username}</h2>
 
       <div className="profile-header">
-        <div
-          className="avatar-large"
-          style={{ background: avatarColor }}
-        >
+        <div className="avatar-large" style={{ background: avatarColor }}>
           {initial}
         </div>
         <div className="profile-info">
@@ -126,11 +160,8 @@ export default function Profile() {
               >
                 {isFollowing ? 'Unfollow' : 'Follow'}
               </button>
-              {/*Message button */}
               <Link to={`/chat/${username}`}>
-                <button style={{ marginLeft: 8 }}>
-                  Message
-                </button>
+                <button style={{ marginLeft: 8 }}>Message</button>
               </Link>
             </>
           )}
@@ -163,16 +194,67 @@ export default function Profile() {
             />
             <div className="intro-buttons">
               <button type="submit">Save</button>
-              <button
-                type="button"
-                onClick={() => setEditingIntro(false)}
-              >
+              <button type="button" onClick={() => setEditingIntro(false)}>
                 Cancel
               </button>
             </div>
           </form>
         )}
       </section>
+
+      {currentUser === username && (
+        <section className="profile-private-section">
+          <h3>Contact & Occupation</h3>
+          {!editingPrivate ? (
+            <>
+              <p><strong>Phone:</strong> {privateInfo.phone || <em>Not set</em>}</p>
+              <p><strong>Email:</strong> {privateInfo.email || <em>Not set</em>}</p>
+              <p><strong>Occupation:</strong> {privateInfo.occupation || <em>Not set</em>}</p>
+              <button
+                onClick={() => {
+                  setDraftPrivate(privateInfo)
+                  setEditingPrivate(true)
+                }}
+              >
+                {privateInfo.phone || privateInfo.email || privateInfo.occupation ? 'Edit' : 'Add'}
+              </button>
+            </>
+          ) : (
+            <form onSubmit={savePrivate} className="profile-private-edit">
+              <label>
+                Phone:
+                <input
+                  type="text"
+                  value={draftPrivate.phone}
+                  onChange={e => setDraftPrivate({ ...draftPrivate, phone: e.target.value })}
+                />
+              </label>
+              <label>
+                Email:
+                <input
+                  type="email"
+                  value={draftPrivate.email}
+                  onChange={e => setDraftPrivate({ ...draftPrivate, email: e.target.value })}
+                />
+              </label>
+              <label>
+                Occupation:
+                <input
+                  type="text"
+                  value={draftPrivate.occupation}
+                  onChange={e => setDraftPrivate({ ...draftPrivate, occupation: e.target.value })}
+                />
+              </label>
+              <div className="private-buttons">
+                <button type="submit">Save</button>
+                <button type="button" onClick={() => setEditingPrivate(false)}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </section>
+      )}
 
       <div className="lists">
         <section>
@@ -181,19 +263,13 @@ export default function Profile() {
             {followers.map(u => (
               <li key={u} className="user-list-item">
                 <Link to={`/profile/${u}`} className="user-link">
-                  <div
-                    className="avatar-small"
-                    style={{ background: getAvatarColor(u) }}
-                  >
+                  <div className="avatar-small" style={{ background: getAvatarColor(u) }}>
                     {u[0].toUpperCase()}
                   </div>
                   {u}
                 </Link>
                 {currentUser === username && u !== username && (
-                  <button
-                    className="remove-button"
-                    onClick={() => removeFollower(u)}
-                  >
+                  <button className="remove-button" onClick={() => removeFollower(u)}>
                     Remove
                   </button>
                 )}
@@ -208,19 +284,13 @@ export default function Profile() {
             {following.map(u => (
               <li key={u} className="user-list-item">
                 <Link to={`/profile/${u}`} className="user-link">
-                  <div
-                    className="avatar-small"
-                    style={{ background: getAvatarColor(u) }}
-                  >
+                  <div className="avatar-small" style={{ background: getAvatarColor(u) }}>
                     {u[0].toUpperCase()}
                   </div>
                   {u}
                 </Link>
                 {currentUser === username && u !== username && (
-                  <button
-                    className="remove-button"
-                    onClick={() => removeFollower(u)}
-                  >
+                  <button className="remove-button" onClick={() => removeFollower(u)}>
                     Remove
                   </button>
                 )}

@@ -12,9 +12,12 @@ namespace MoviePerspectives.Context
         public DbSet<Review> Reviews { get; set; } = default!;
         public DbSet<Follow> Follows { get; set; } = default!;
         public DbSet<ChatMessage> ChatMessages { get; set; } = default!;
+        public DbSet<Share> Shares { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Share>()
+            .HasKey(s => new { s.OwnerUsername, s.WithUsername });
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Parent)

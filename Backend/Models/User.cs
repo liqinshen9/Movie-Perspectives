@@ -11,5 +11,9 @@ namespace MoviePerspectives.Models
 
         public ICollection<Follow> Followers { get; set; } = new List<Follow>();
         public ICollection<Follow> Following { get; set; } = new List<Follow>();
+
+         public string? Phone { get; set; }
+        public string? Email { get; set; }
+        public string? Occupation { get; set; }
     }
 }

@@ -102,3 +102,33 @@ section ul {
 .remove-button:hover {
   background: var(--danger-hover);
 }
+
+.profile-private-section {
+  margin-bottom: 2rem;
+}
+
+.profile-private-section h3 {
+  margin-bottom: 0.5rem;
+}
+
+.profile-private-edit label {
+  display: block;
+  font-weight: bold;
+  margin-top: 0.75rem;
+}
+
+.profile-private-edit input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.private-buttons {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
