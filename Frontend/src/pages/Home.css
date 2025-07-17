@@ -1,9 +1,16 @@
-
 .home-page {
   max-width: 1100px;
   margin: 2rem auto;
   padding: 0 1rem;
   box-sizing: border-box;
+}
+
+.home-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 
@@ -13,7 +20,6 @@
   margin-bottom: 1.5rem;
 }
 
-
 .search-wrapper {
   display: flex;
   align-items: center;
@@ -22,7 +28,6 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   padding-right: 0.5rem;
 }
-
 
 .search-icon {
   padding: 0 0.75rem;
@@ -41,10 +46,38 @@
   box-sizing: border-box;
 }
 
-
 .home-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 2rem;
 }
 
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;    /* center all children in the card */
+  text-align: center;     /* center the text under the poster */
+}
+
+.movie-card h3,
+.movie-card p {
+  width: 100%;            /* allow them to span the card’s width */
+  margin: 0.5rem 0;       /* just some breathing room */
+}
+
+.movie-card:hover {
+  transform: translateY(-4px);
+}
+
+.movie-poster {
+  width: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+
+
+.movie-card p {
+  margin: 0;
+  line-height: 1.4;
+}

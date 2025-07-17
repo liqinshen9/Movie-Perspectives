@@ -15,7 +15,7 @@ vi.mock('react-router-dom', async () => {
       <a href={to} className={className}>
         {children}
       </a>
-    )
+    ),
   };
 });
 
@@ -24,11 +24,26 @@ describe('Header Component', () => {
     mockNavigate.mockReset();
   });
 
-  const renderWithTheme = (username: string | null, toggle = () => {}) =>
+  const renderWithTheme = (
+    username: string | null,
+    toggle = () => {},
+    searchTerm = '',
+    setSearchTerm = () => {},
+    searchType: 'title' | 'country' = 'title',
+    setSearchType = () => {}
+  ) =>
     render(
       <ThemeContext.Provider value={{ theme: 'light', toggle }}>
         <MemoryRouter>
-          <Header username={username} onLogout={vi.fn()} />
+          <Header
+            username={username}
+            onLogout={vi.fn()}
+            // NEW props for the unified search bar:
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            searchType={searchType}
+            setSearchType={setSearchType}
+          />
         </MemoryRouter>
       </ThemeContext.Provider>
     );
@@ -52,7 +67,15 @@ describe('Header Component', () => {
     render(
       <ThemeContext.Provider value={{ theme: 'light', toggle: () => {} }}>
         <MemoryRouter>
-          <Header username="bob" onLogout={onLogout} />
+          <Header
+            username="bob"
+            onLogout={onLogout}
+            // NEW props stubbed
+            searchTerm=""
+            setSearchTerm={() => {}}
+            searchType="title"
+            setSearchType={() => {}}
+          />
         </MemoryRouter>
       </ThemeContext.Provider>
     );

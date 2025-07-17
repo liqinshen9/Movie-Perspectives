@@ -6,4 +6,5 @@ export interface Movie {
   photoUrl: string;
   introduction: string;
   reviews?: Review[];
+  country?: string;   
 }

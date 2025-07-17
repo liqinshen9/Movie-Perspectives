@@ -5,12 +5,12 @@ import { getCurrentUser, logout } from './api/authService';
 import { getAvatarColor } from './utils/avatar';
 
 import Header from './pages/Header';
-import ChatPage from './pages/Chatpage';
 import Home from './pages/Home';
 import MovieDetail from './pages/MovieDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import ChatPage from './pages/ChatPage';
 
 export default function App() {
   const [user, setUser] = useState<string | null>(getCurrentUser());
@@ -21,17 +21,41 @@ export default function App() {
     setUser(null);
   };
 
+  // ─── NEW: Lifted, shared search state ─────────────────────────
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchType, setSearchType] = useState<'title' | 'country'>('title');
+  // ────────────────────────────────────────────────────────────────
+
   return (
     <ThemeProvider>
       <BrowserRouter>
         {/* Use our new styled header */}
-        <Header username={user} onLogout={handleLogout} />
+        <Header
+          username={user}
+          onLogout={handleLogout}
+
+          // ─── NEW: Pass search props down ───────────────────
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchType={searchType}
+          setSearchType={setSearchType}
+          // ────────────────────────────────────────────────────
+        />
 
         <main style={{ padding: 20 }}>
           <Routes>
             <Route
               path="/"
-              element={<Home username={user ?? undefined} />}
+              element={
+                <Home
+                  username={user ?? undefined}
+
+                  // ─── NEW: Provide search props to Home ───────
+                  searchTerm={searchTerm}
+                  searchType={searchType}
+                  // ───────────────────────────────────────────────
+                />
+              }
             />
 
             <Route
@@ -61,22 +85,14 @@ export default function App() {
             <Route
               path="/login"
               element={
-                user ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <Login onLogin={handleLogin} />
-                )
+                user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />
               }
             />
 
             <Route
               path="/register"
               element={
-                user ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <Register />
-                )
+                user ? <Navigate to="/" replace /> : <Register />
               }
             />
           </Routes>

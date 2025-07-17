@@ -8,27 +8,57 @@
 }
 
 .site-header {
-  background:      var(--card-bg);
-  border-bottom:   1px solid var(--input-border);
-  padding:         0.75rem 1rem;
-  display:         flex;
-  align-items:     center;
-  justify-content: space-between;
+  display:        flex;
+  align-items:    center;
+  padding:        0.75rem 1rem;
+  background:     var(--card-bg);
+  border-bottom:  1px solid var(--input-border);
 }
 
+/* Logo stays on the left */
 .logo {
-  margin:    0;
-  font-size: 1.25rem;
-  color:     var(--text);
+  display:        flex;
+  align-items:    center;
+  font-size:      1.25rem;
+  color:          var(--text);
+  margin-right:   1rem;
 }
 
+/* <-- new positioning: search sits between logo and nav -->
+   flex:1 ensures nav is pushed to the right */
+.nav-search {
+  display:        flex;
+  align-items:    center;
+  flex:           1;
+  max-width:      400px;
+}
+
+/* dropdown & input shared styling */
+.nav-search select,
+.nav-search input {
+  padding:        0.4rem 0.6rem;
+  border-radius:  4px;
+  border:         1px solid #ccc;
+  font-size:      0.9rem;
+}
+
+.nav-search select {
+  margin-right:   0.5rem;
+  background:     #fff;
+  cursor:         pointer;
+}
+
+.nav-search input {
+  width:          100%;
+}
+
+/* Right‑aligned nav links */
 .header-nav {
   display:       flex;
   align-items:   center;
-
 }
 
-
+/* Existing nav‑link styles */
 .nav-link,
 .logout-button {
   display:        inline-flex;
@@ -42,29 +72,21 @@
   border:         none;
   cursor:         pointer;
   transition:     background 0.2s ease;
+  margin-right:   1rem;
 }
-
 
 .nav-link:hover,
 .logout-button:hover {
   background: var(--button-hover);
 }
 
-
 .nav-link.active {
   background: var(--button-hover);
 }
 
-
-.nav-link  { margin-right: 1rem; }
-.logout-button { margin-right: 1rem; }
-
-
 .nav-link svg {
   margin-right: 0.5rem;
-  
 }
-
 
 .greeting {
   margin: 0 0.25rem 0 0;
