@@ -1,3 +1,4 @@
+// src/pages/Home.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../models/Movie';
@@ -7,7 +8,7 @@ import './Home.css';
 interface HomeProps {
   username?: string;
   searchTerm: string;
-  searchType: 'title' | 'country';
+  searchType: 'all' | 'title' | 'country';
 }
 
 export default function Home({
@@ -16,7 +17,15 @@ export default function Home({
   searchType,
 }: HomeProps) {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const moviesPerPage = 12;
   const navigate = useNavigate();
+
+  // ─── NEW: whenever the user clears or changes filter, jump back to page 1 ───
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, searchType]);
+  // ──────────────────────────────────────────────────────────────────────────
 
   useEffect(() => {
     getAllMovies().then(setMovies).catch(console.error);
@@ -27,7 +36,10 @@ export default function Home({
     uk: ['uk', 'britain', 'british', 'united kingdom'],
     korea: ['korea','south korea','south korean','korean','koreea','korena'],
     japan: ['japan','japanese','japn','japnaese','japnaes','japanee'],
-    china: ['chinese']
+    china: ['chinese'],
+    france: ['french','frence'],
+    russia: ['russian'],
+    spanish: ['spain','spanish']
   };
 
   const canonicalCountry = (raw: string) => {
@@ -38,40 +50,56 @@ export default function Home({
     return s;
   };
 
-  
   const norm = searchTerm.trim().toLowerCase();
 
-  let filtered: Movie[];
-  if (!norm) {
-    filtered = movies.slice(0, 6);
+  // build the full filtered list
+  let filteredAll: Movie[];
+  if (searchType === 'all') {
+    filteredAll = norm
+      ? movies.filter(m =>
+          m.title.toLowerCase().includes(norm) ||
+          canonicalCountry(m.country ?? '').includes(canonicalCountry(searchTerm))
+        )
+      : movies;
+  } else if (!norm) {
+    // default “Most popular” six
+    filteredAll = movies.slice(0, 6);
   } else if (searchType === 'title') {
-    filtered = movies.filter(m =>
+    filteredAll = movies.filter(m =>
       m.title.toLowerCase().includes(norm)
     );
   } else {
     const termCanon = canonicalCountry(searchTerm);
-    filtered = movies.filter(m =>
+    filteredAll = movies.filter(m =>
       canonicalCountry(m.country ?? '') === termCanon
     );
   }
+
+  // pagination logic
+  const lastIdx = currentPage * moviesPerPage;
+  const firstIdx = lastIdx - moviesPerPage;
+  const currentMovies = filteredAll.slice(firstIdx, lastIdx);
+  const totalPages = Math.ceil(filteredAll.length / moviesPerPage);
 
   const goTo = (id: number) => {
     if (username) navigate(`/movies/${id}`);
     else navigate('/login');
   };
 
-  const headingText = !norm
+  const headingText = !norm && searchType !== 'all'
     ? 'Most popular movies'
     : searchType === 'country'
-    ? `Movies from ${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}`
-    : `Search results for "${searchTerm}"`;
+      ? `Movies from ${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}`
+      : searchType === 'all' && !norm
+        ? 'All Movies'
+        : `Search results for "${searchTerm}"`;
 
   return (
     <div className="home-page">
       <h2 className="home-title">{headingText}</h2>
 
       <div className="home-grid">
-        {filtered.map(m => (
+        {currentMovies.map(m => (
           <div
             key={m.id}
             className="movie-card"
@@ -79,19 +107,42 @@ export default function Home({
             role="button"
             tabIndex={0}
             onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ')
-                goTo(m.id);
+              if (e.key === 'Enter' || e.key === ' ') goTo(m.id);
             }}
           >
-            <img
-              src={m.photoUrl}
-              alt={m.title}
-              className="movie-poster"
-            />
+            <img src={m.photoUrl} alt={m.title} className="movie-poster" />
             <h3>{m.title}</h3>
           </div>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i + 1}
+              className={currentPage === i + 1 ? 'active' : ''}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,33 +1,26 @@
-import React, { useContext } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useContext }          from 'react';
+import { NavLink, useNavigate }       from 'react-router-dom';
 import {
-  FiHome,
-  FiLogIn,
-  FiUserPlus,
-  FiMoon,
-  FiSun,
-  FiLogOut,
+  FiHome, FiLogIn, FiUserPlus,
+  FiMoon, FiSun, FiLogOut
 } from 'react-icons/fi';
-import { ThemeContext } from '../context/ThemeContext';
-import { getAvatarColor } from '../utils/avatar';
+import { ThemeContext }               from '../context/ThemeContext';
+import { getAvatarColor }             from '../utils/avatar';
 import './Header.css';
 
 interface HeaderProps {
-  username: string | null;
+  username: string|null;
   onLogout: () => void;
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  searchType: 'title' | 'country';
-  setSearchType: React.Dispatch<React.SetStateAction<'title' | 'country'>>;
+  searchType: 'all'|'title'|'country';
+  setSearchType: React.Dispatch<React.SetStateAction<'all'|'title'|'country'>>;
 }
 
 export default function Header({
-  username,
-  onLogout,
-  searchTerm,
-  setSearchTerm,
-  searchType,
-  setSearchType,
+  username, onLogout,
+  searchTerm, setSearchTerm,
+  searchType, setSearchType
 }: HeaderProps) {
   const { theme, toggle } = useContext(ThemeContext);
   const nav = useNavigate();
@@ -37,8 +30,8 @@ export default function Header({
     nav('/login');
   };
 
-  const avatarLetter = username ? username.charAt(0).toUpperCase() : '';
-  const avatarBg = username ? getAvatarColor(username) : '#3498db';
+  const avatarLetter = username?.charAt(0).toUpperCase() ?? '';
+  const avatarBg     = username ? getAvatarColor(username) : '#3498db';
 
   return (
     <header className="site-header">
@@ -47,14 +40,12 @@ export default function Header({
         <span>Movie Perspectives</span>
       </div>
 
-      {/* <--- moved here from inside the nav */}
       <div className="nav-search">
         <select
           value={searchType}
-          onChange={e =>
-            setSearchType(e.target.value as 'title' | 'country')
-          }
+          onChange={e => setSearchType(e.target.value as any)}
         >
+          <option value="all">All</option>
           <option value="title">Title</option>
           <option value="country">Country</option>
         </select>
@@ -63,7 +54,9 @@ export default function Header({
           placeholder={
             searchType === 'title'
               ? 'Search movies...'
-              : 'Search by country...'
+              : searchType === 'country'
+                ? 'Search by country...'
+                : 'Type to filter...'
           }
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
@@ -71,27 +64,25 @@ export default function Header({
       </div>
 
       <nav className="header-nav">
-        <NavLink to="/" className="nav-link">
+        <NavLink
+          to="/"
+          className="nav-link"
+          onClick={() => {
+            setSearchTerm('');
+            setSearchType('title');
+          }}
+        >
           <FiHome /> <span>Home</span>
         </NavLink>
 
         {username ? (
           <>
             <span className="greeting">Hello,&nbsp;{username}</span>
-
-            <NavLink
-              to={`/profile/${username}`}
-              className="avatar-link"
-              title={`View ${username}'s profile`}
-            >
-              <div
-                className="avatar"
-                style={{ backgroundColor: avatarBg }}
-              >
+            <NavLink to={`/profile/${username}`} className="avatar-link">
+              <div className="avatar" style={{ backgroundColor: avatarBg }}>
                 {avatarLetter}
               </div>
             </NavLink>
-
             <button onClick={handleLogout} className="nav-link logout-link">
               <FiLogOut /> <span>Logout</span>
             </button>
@@ -112,7 +103,7 @@ export default function Header({
           className="theme-toggle"
           aria-label="Toggle theme"
         >
-          {theme === 'light' ? <FiMoon size={20} /> : <FiSun size={20} />}
+          {theme === 'light' ? <FiMoon size={20}/> : <FiSun size={20}/>}
         </button>
       </nav>
     </header>

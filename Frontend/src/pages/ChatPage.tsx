@@ -15,15 +15,15 @@ interface PrivateInfo {
 
 export default function ChatPage({ currentUser }: ChatPageProps) {
   const { withUser } = useParams<{ withUser: string }>()
-  const [history, setHistory]         = useState<ChatMessage[]>([])
-  const [draft,  setDraft]            = useState('')
-  const [sharedAllowed, setSharedAllowed]    = useState(false)
+  const [history, setHistory] = useState<ChatMessage[]>([])
+  const [draft, setDraft] = useState('')
+  const [sharedAllowed, setSharedAllowed] = useState(false)
   const [privateInfo, setPrivateInfo] = useState<PrivateInfo | null>(null)
-  const [myShared, setMyShared]       = useState(false)
+  const [myShared, setMyShared] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
   if (!currentUser) return <Navigate to="/login" replace />
-  if (!withUser)    return <p>No chat partner specified.</p>
+  if (!withUser) return <p>No chat partner specified.</p>
 
   const loadHistory = async () => {
     const msgs = await getHistory(currentUser, withUser)
@@ -115,7 +115,20 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
       {sharedAllowed && privateInfo && (
         <div className="partner-private-info">
           <p><strong>Phone:</strong> {privateInfo.phone || '—'}</p>
-          <p><strong>Email:</strong> {privateInfo.email || '—'}</p>
+          <p>
+            <strong>Email:</strong>{' '}
+            {privateInfo.email
+              ? (
+                  <a
+                    href={`https://mail.google.com/mail/?view=cm&to=${privateInfo.email}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {privateInfo.email}
+                  </a>
+                )
+              : '—'}
+          </p>
           <p><strong>Occupation:</strong> {privateInfo.occupation || '—'}</p>
         </div>
       )}
@@ -123,7 +136,9 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
       <div ref={boxRef} className="chat-history">
         {history.map(m => {
           const mine = m.fromUsername === currentUser
-          const date = new Date(m.sentAt.endsWith('Z') ? m.sentAt : m.sentAt + 'Z')
+          const date = new Date(
+            m.sentAt.endsWith('Z') ? m.sentAt : m.sentAt + 'Z'
+          )
           return (
             <div key={m.id} className={`chat-msg-container ${mine ? 'me' : 'them'}`}>
               <div className={`chat-msg ${mine ? 'me' : 'them'}`}>
@@ -132,7 +147,11 @@ export default function ChatPage({ currentUser }: ChatPageProps) {
                 <time>{date.toLocaleTimeString()}</time>
               </div>
               {mine && (
-                <button className="recall-button" onClick={() => recall(m.id)} aria-label="Recall message">
+                <button
+                  className="recall-button"
+                  onClick={() => recall(m.id)}
+                  aria-label="Recall message"
+                >
                   ↩
                 </button>
               )}
