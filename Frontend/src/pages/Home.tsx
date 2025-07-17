@@ -22,11 +22,12 @@ export default function Home({
     getAllMovies().then(setMovies).catch(console.error);
   }, []);
 
-  // country synonyms map
   const countrySynonyms: Record<string, string[]> = {
     us: ['us', 'usa', 'america', 'american'],
     uk: ['uk', 'britain', 'british', 'united kingdom'],
-    // add more as needed
+    korea: ['korea','south korea','south korean','korean','koreea','korena'],
+    japan: ['japan','japanese','japn','japnaese','japnaes','japanee'],
+    china: ['chinese']
   };
 
   const canonicalCountry = (raw: string) => {
@@ -37,7 +38,7 @@ export default function Home({
     return s;
   };
 
-  // filtering logic: show top 6 when no term, otherwise by title or country
+  
   const norm = searchTerm.trim().toLowerCase();
 
   let filtered: Movie[];
