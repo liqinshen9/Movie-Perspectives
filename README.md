@@ -4,48 +4,49 @@ Movie Perspectives is a full‑stack project built with a React + TypeScript fro
 Demo: Please watch the walkthrough video here.
 
 
-# Prerequisites
+## Prerequisites
 .NET 8.0 SDK
 
 Node.js & npm
 
 SQL Server (local or remote)
 
-# Cloning the Repository to your local machine
+## Cloning the Repository to your local machine
 git clone https://github.com/liqinshen9/Movie-Perspectives.git
 cd Movie-Perspectives
 
-# Backend Setup
+## Backend Setup
 cd Backend
-Configure your database
+
+### Configure your database
 Edit appsettings.json and set your connection string under ConnectionStrings:DefaultConnection.
 
-Enable EF Core
+### Enable EF Core
 In Program.cs, make sure your SQL Server line is active:
 
 builder.Services.AddDbContext<MovieContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-Apply migrations & seed data
+### Apply migrations & seed data
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 
-run the backend server
+### run the backend server
 dotnet run
 
-# Frontend Setup
+## Frontend Setup
 cd Frontend
 
-Install the necessary packages and Material-UI dependencies
+### Install the necessary packages and Material-UI dependencies
 npm install
 
-Start the frontend development server
+### Start the frontend development server
 npm run dev
 
 The dev server will start (by default) at http://localhost:5173.
 
-Accessing the App
+### Accessing the App
 Open your browser to the URL shown in your terminal (e.g. http://localhost:5173).
 
 
