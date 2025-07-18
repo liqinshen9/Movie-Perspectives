@@ -9,17 +9,29 @@ using MoviePerspectives.Repositories.Abstract;
 using MoviePerspectives.Repositories.Concrete;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
+var env     = builder.Environment;
 
-builder.Services.AddDbContext<MovieContext>(opts =>
-    opts.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
+// ─── DbContext: pick InMemory for TEST, SQL Server otherwise ────────────────
+if (env.IsEnvironment("Test"))
+{
+    builder.Services.AddDbContext<MovieContext>(opts =>
+        opts.UseInMemoryDatabase("TestDb"));
+}
+else
+{
+    builder.Services.AddDbContext<MovieContext>(opts =>
+        opts.UseSqlServer(
+            builder.Configuration
+                   .GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Missing DefaultConnection")
-    )
-);
+        )
+    );
+}
 
-
+// ─── Repositories ───────────────────────────────────────────────────────────
 builder.Services.AddScoped<IMovieRepository, EfMovieRepository>();
 builder.Services.AddScoped<IReviewRepository, EfReviewRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
@@ -32,18 +44,22 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
      .AllowAnyHeader()
      .AllowAnyMethod()
 ));
-builder.Services.AddAuthentication(/* ... */);
+builder.Services.AddAuthentication(/* … */);
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-
+// ─── Migrate or ensure created ───────────────────────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<MovieContext>();
-    var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
 
-    if (env.IsDevelopment())
+    if (env.IsEnvironment("Test"))
+    {
+        // InMemory DB needs EnsureCreated, no migrations
+        ctx.Database.EnsureCreated();
+    }
+    else if (env.IsDevelopment())
     {
         ctx.Database.EnsureCreated();
     }
@@ -52,10 +68,9 @@ using (var scope = app.Services.CreateScope())
         ctx.Database.Migrate();
     }
 
-   
-    if (!ctx.Movies.Any())
+    // ─── Seed movies only in non‑Test env ─────────────────────────────────────
+    if (!env.IsEnvironment("Test") && !ctx.Movies.Any())
     {
-        
         ctx.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[Movies]', RESEED, 0);");
 
         var movieCsv = Path.Combine(env.ContentRootPath, "Data", "movies.csv");
@@ -64,11 +79,7 @@ using (var scope = app.Services.CreateScope())
 
         var movies = csv
             .GetRecords<Movie>()
-            .Select(m =>
-            {
-                m.Id = 0;   
-                return m;
-            })
+            .Select(m => { m.Id = 0; return m; })
             .ToList();
 
         ctx.Movies.AddRange(movies);
@@ -80,6 +91,5 @@ app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 app.Run();

@@ -134,3 +134,8 @@
 .chat-input button:hover {
   background: var(--button-hover);
 }
+
+.chat-page a {
+  color: var(--button-bg);
+  text-decoration: underline;
+}
