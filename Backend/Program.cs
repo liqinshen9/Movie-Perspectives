@@ -12,7 +12,6 @@ using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddDbContext<MovieContext>(opts =>
     opts.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
@@ -33,7 +32,7 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
      .AllowAnyHeader()
      .AllowAnyMethod()
 ));
-builder.Services.AddAuthentication(/* ... JWT or cookie config ... */);
+builder.Services.AddAuthentication(/* ... */);
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -53,30 +52,29 @@ using (var scope = app.Services.CreateScope())
         ctx.Database.Migrate();
     }
 
-    
-    ctx.Movies.RemoveRange(ctx.Movies);
-    ctx.SaveChanges();
+   
+    if (!ctx.Movies.Any())
+    {
+        
+        ctx.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[Movies]', RESEED, 0);");
 
-    
-    ctx.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[Movies]', RESEED, 0);");
+        var movieCsv = Path.Combine(env.ContentRootPath, "Data", "movies.csv");
+        using var reader = new StreamReader(movieCsv);
+        using var csv    = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-    
-    var movieCsv = Path.Combine(env.ContentRootPath, "Data", "movies.csv");
-    using var reader = new StreamReader(movieCsv);
-    using var csv    = new CsvReader(reader, CultureInfo.InvariantCulture);
-    var movies = csv
-        .GetRecords<Movie>()
-        .Select(m =>
-        {
-            m.Id = 0;  
-            return m;
-        })
-        .ToList();
+        var movies = csv
+            .GetRecords<Movie>()
+            .Select(m =>
+            {
+                m.Id = 0;   
+                return m;
+            })
+            .ToList();
 
-    ctx.Movies.AddRange(movies);
-    ctx.SaveChanges();
+        ctx.Movies.AddRange(movies);
+        ctx.SaveChanges();
+    }
 }
-
 
 app.UseRouting();
 app.UseCors();
