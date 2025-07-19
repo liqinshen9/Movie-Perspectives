@@ -30,6 +30,7 @@ builder.Services.AddDbContext<MovieContext>(options =>
 
 ### Apply migrations & seed data
 dotnet ef migrations add InitialCreate
+
 dotnet ef database update
 
 ### run the backend server
@@ -51,16 +52,20 @@ Open your browser to the URL shown in your terminal (e.g. http://localhost:5173)
 
 ## Advanced Features
 Theme Toggle (Dark/Light) via React Context & CSS variables
+
 Unit Testing components (Vitest + React Testing Library)
+
 End‑to‑End Testing components (Cypress)
 
 ## Running Tests
 ### Unit Tests
 cd Frontend
+
 npm test
 
 ### End‑to‑End (Cypress)
 cd Frontend
+
 npm run cypress:open
 
 
