@@ -49,6 +49,20 @@ The dev server will start (by default) at http://localhost:5173.
 ### Accessing the App
 Open your browser to the URL shown in your terminal (e.g. http://localhost:5173).
 
+## Advanced Features
+Theme Toggle (Dark/Light) via React Context & CSS variables
+Unit Testing components (Vitest + React Testing Library)
+End‑to‑End Testing components (Cypress)
+
+## Running Tests
+### Unit Tests
+cd Frontend
+npm test
+
+### End‑to‑End (Cypress)
+cd Frontend
+npm run cypress:open
+
 
 Thank you for exploring Movie Perspectives!
 Feel free to dive into the Frontend/README.md and Backend/README.md for more in‑depth documentation on architecture and endpoints.
