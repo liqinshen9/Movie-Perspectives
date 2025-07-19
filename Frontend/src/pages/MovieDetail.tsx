@@ -1,5 +1,6 @@
+// src/pages/MovieDetail.tsx
 import React, { useEffect, useState, type FormEvent } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getMovieById } from '../api/movieService';
 import {
   getAllReviews,
@@ -22,7 +23,6 @@ interface ReviewNode extends Review {
 
 // Helper to parse timestamps as UTC and display local time with correct AM/PM
 function formatTimestamp(ts: string): string {
-  // if no timezone suffix, treat as UTC
   const iso = ts.endsWith('Z') ? ts : ts + 'Z';
   const d   = new Date(iso);
   return d.toLocaleString(undefined, {
@@ -54,6 +54,7 @@ function buildTree(flat: Review[]): ReviewNode[] {
 export default function MovieDetail({ username }: MovieDetailProps) {
   const { id } = useParams<{ id: string }>();
   const movieId = Number(id);
+  const navigate = useNavigate();
 
   const [movie, setMovie] = useState<Movie | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -120,6 +121,15 @@ export default function MovieDetail({ username }: MovieDetailProps) {
 
   return (
     <div className="movie-detail">
+      {/* ─── NEW: Back to home button ──────────────────────────── */}
+      <button
+        className="back-button"
+        onClick={() => navigate('/')}
+      >
+        ← Back to Home
+      </button>
+      {/* ────────────────────────────────────────────────────────── */}
+
       <h1 className="title">{movie.title}</h1>
       <div className="poster-container">
         <img
