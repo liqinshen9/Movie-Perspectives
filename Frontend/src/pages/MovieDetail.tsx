@@ -10,7 +10,6 @@ import type { Movie } from '../models/Movie';
 import type { Review } from '../models/Review';
 import './MovieDetail.css';
 
-
 import { getAvatarColor } from '../utils/avatar';
 
 interface MovieDetailProps {
@@ -19,6 +18,22 @@ interface MovieDetailProps {
 
 interface ReviewNode extends Review {
   replies: ReviewNode[];
+}
+
+// Helper to parse timestamps as UTC and display local time with correct AM/PM
+function formatTimestamp(ts: string): string {
+  // if no timezone suffix, treat as UTC
+  const iso = ts.endsWith('Z') ? ts : ts + 'Z';
+  const d   = new Date(iso);
+  return d.toLocaleString(undefined, {
+    year:   'numeric',
+    month:  'numeric',
+    day:    'numeric',
+    hour:   'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  });
 }
 
 function buildTree(flat: Review[]): ReviewNode[] {
@@ -197,7 +212,6 @@ function ReviewCard({
   return (
     <div className="review-card" style={{ marginLeft: level * 20 }}>
       <div className="review-header">
-        {/* now using the avatar-link class */}
         <Link to={`/profile/${node.username}`} className="avatar-link">
           <div
             className="avatar-small"
@@ -213,7 +227,7 @@ function ReviewCard({
 
         {node.reviewDate && (
           <span className="review-date">
-            {new Date(node.reviewDate).toLocaleString()}
+            {formatTimestamp(node.reviewDate)}
           </span>
         )}
 
