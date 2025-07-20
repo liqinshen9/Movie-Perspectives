@@ -21,12 +21,10 @@ export default function Home({
   const moviesPerPage = 12;
   const navigate = useNavigate();
 
-  // ─── NEW: whenever the user clears or changes filter, jump back to page 1 ───
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, searchType]);
-  // ──────────────────────────────────────────────────────────────────────────
-
+  
   useEffect(() => {
     getAllMovies().then(setMovies).catch(console.error);
   }, []);
@@ -39,7 +37,8 @@ export default function Home({
     china: ['chinese'],
     france: ['french','frence'],
     russia: ['russian'],
-    spanish: ['spain','spanish']
+    spanish: ['spain','spanish'],
+    newzealand: ['New Zealand', 'new zealand']
   };
 
   const canonicalCountry = (raw: string) => {

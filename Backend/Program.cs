@@ -14,7 +14,6 @@ using System.Linq;
 var builder = WebApplication.CreateBuilder(args);
 var env     = builder.Environment;
 
-// ─── DbContext: pick InMemory for TEST, SQL Server otherwise ────────────────
 if (env.IsEnvironment("Test"))
 {
     builder.Services.AddDbContext<MovieContext>(opts =>
@@ -31,7 +30,6 @@ else
     );
 }
 
-// ─── Repositories ───────────────────────────────────────────────────────────
 builder.Services.AddScoped<IMovieRepository, EfMovieRepository>();
 builder.Services.AddScoped<IReviewRepository, EfReviewRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
@@ -49,14 +47,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// ─── Migrate or ensure created ───────────────────────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<MovieContext>();
 
     if (env.IsEnvironment("Test"))
     {
-        // InMemory DB needs EnsureCreated, no migrations
+      
         ctx.Database.EnsureCreated();
     }
     else if (env.IsDevelopment())
@@ -68,7 +65,6 @@ using (var scope = app.Services.CreateScope())
         ctx.Database.Migrate();
     }
 
-    // ─── Seed movies only in non‑Test env ─────────────────────────────────────
     if (!env.IsEnvironment("Test") && !ctx.Movies.Any())
     {
         ctx.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[Movies]', RESEED, 0);");
