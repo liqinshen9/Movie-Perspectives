@@ -6,8 +6,8 @@ Demo: Please watch the walkthrough video here.
 Movie Perspectives follows the “networking” theme by making it easy to connect with others: you can follow fellow movie fans to build your own circle, send one‑on‑one messages in chat, share contact details only with people you trust, and start threaded talks under each film. These social features turn the app from a simple movie database into a lively space where people share unique thoughts about movies, talk about favourites, and grow their network around their love of movies.
 
 
-## Prerequisites
-.NET 8.0 SDK
+## Prerequisites (Please download the following prior to running the app)
+.NET 8.0 SDK 
 
 Node.js & npm
 
@@ -30,13 +30,9 @@ builder.Services.AddDbContext<MovieContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-### Apply migrations & seed data
-dotnet ef migrations add InitialCreate
-
-dotnet ef database update
-
 ### run the backend server
 dotnet run
+
 
 ## Frontend Setup
 cd Frontend
@@ -51,6 +47,7 @@ The dev server will start (by default) at http://localhost:5173.
 
 ### Accessing the App
 Open your browser to the URL shown in your terminal (e.g. http://localhost:5173).
+
 
 ## Advanced Features
 Theme Toggle (Dark/Light) via React Context & CSS variables
