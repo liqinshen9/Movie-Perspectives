@@ -14,10 +14,6 @@ namespace MoviePerspectives.Controllers
         private readonly MovieContext _db;
         public TestingController(MovieContext db) => _db = db;
 
-        /// <summary>
-        /// Deletes any review whose Username begins with "dtuser_"
-        /// so E2E tests can clean up after themselves.
-        /// </summary>
         [HttpPost("cleanup-test-reviews")]
         public async Task<IActionResult> CleanupTestReviews()
         {

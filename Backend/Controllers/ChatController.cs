@@ -12,10 +12,7 @@ namespace MoviePerspectives.Controllers
         public ChatController(IChatRepository repo) => _repo = repo;
 
         [HttpGet("{withUser}")]
-        public async Task<IActionResult> GetHistory(
-            string withUser,
-            [FromQuery] string? me
-        )
+        public async Task<IActionResult> GetHistory(string withUser,[FromQuery] string? me)
         {
             if (string.IsNullOrEmpty(me))
                 return BadRequest("me query‐param is required");
@@ -30,9 +27,7 @@ namespace MoviePerspectives.Controllers
             if (string.IsNullOrEmpty(dto.FromUsername) || string.IsNullOrEmpty(dto.ToUsername))
                 return BadRequest("FromUsername and ToUsername are required");
 
-            // **Only added this line** to stamp the real send time
             dto.SentAt = DateTime.UtcNow;
-
             var saved = await _repo.AddAsync(dto);
             return CreatedAtAction(
                 nameof(GetHistory),

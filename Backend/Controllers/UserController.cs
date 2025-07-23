@@ -160,7 +160,6 @@ namespace MoviePerspectives.Controllers
             return Ok();
         }
 
-        // DELETE /api/user/{username}/share?with={other}
         [HttpDelete("{username}/share")]
         public async Task<IActionResult> Unshare(string username, [FromQuery] string with)
         {

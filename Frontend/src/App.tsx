@@ -16,10 +16,10 @@ export default function App() {
   const handleLogin = (u: string) => setUser(u);
   const handleLogout = () => { logout(); setUser(null); };
 
-  // ─── NEW: shared search state ────────────────────────────
+
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState<'all'|'title'|'country'>('title');
-  // ──────────────────────────────────────────────────────────
+  
 
   return (
     <ThemeProvider>

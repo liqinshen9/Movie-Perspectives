@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using MoviePerspectives.Models;
 using MoviePerspectives.Repositories.Abstract;
 

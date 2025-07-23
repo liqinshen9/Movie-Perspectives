@@ -5,10 +5,10 @@ namespace MoviePerspectives.Context
 {
     public class MovieContext : DbContext
     {
-        public MovieContext(DbContextOptions<MovieContext> opts) : base(opts) { }
+        public MovieContext(DbContextOptions<MovieContext> opts) : base(opts) {}
 
-        public DbSet<Movie>  Movies  { get; set; } = default!;
-        public DbSet<User>   Users   { get; set; } = default!;
+        public DbSet<Movie> Movies { get; set; } = default!;
+        public DbSet<User> Users { get; set; } = default!;
         public DbSet<Review> Reviews { get; set; } = default!;
         public DbSet<Follow> Follows { get; set; } = default!;
         public DbSet<ChatMessage> ChatMessages { get; set; } = default!;

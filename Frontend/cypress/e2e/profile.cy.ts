@@ -5,7 +5,7 @@ describe('Profile page introduction editing', () => {
   const password = 'Password123!'
 
   before(() => {
-    // Register via UI once
+
     cy.visit('/register')
     cy.window().then(win => {
       cy.stub(win, 'alert').as('registerAlert')
@@ -18,14 +18,13 @@ describe('Profile page introduction editing', () => {
   })
 
   beforeEach(() => {
-    // Log in via UI each test
+   
     cy.visit('/login')
     cy.get('input[placeholder="Username"]').type(username)
     cy.get('input[placeholder="Password"]').type(password)
     cy.contains('button', 'Login').click()
     cy.url().should('eq', `${Cypress.config('baseUrl')}/`)
 
-    // Navigate to the profile page
     cy.visit(`/profile/${username}`)
   })
 
@@ -35,7 +34,7 @@ describe('Profile page introduction editing', () => {
       cy.get('textarea[placeholder="Write your introduction…"]')
         .type('Hello, I love movies!')
       cy.contains('button', 'Save').click()
-      // The section should now show our new text
+    
       cy.contains('Hello, I love movies!')
     })
   })

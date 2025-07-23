@@ -21,7 +21,7 @@ interface ReviewNode extends Review {
   replies: ReviewNode[];
 }
 
-// Helper to parse timestamps as UTC and display local time with correct AM/PM
+
 function formatTimestamp(ts: string): string {
   const iso = ts.endsWith('Z') ? ts : ts + 'Z';
   const d   = new Date(iso);
@@ -121,14 +121,14 @@ export default function MovieDetail({ username }: MovieDetailProps) {
 
   return (
     <div className="movie-detail">
-      {/* ─── NEW: Back to home button ──────────────────────────── */}
+      {}
       <button
         className="back-button"
         onClick={() => navigate('/')}
       >
         ← Back to Home
       </button>
-      {/* ────────────────────────────────────────────────────────── */}
+      {}
 
       <h1 className="title">{movie.title}</h1>
       <div className="poster-container">

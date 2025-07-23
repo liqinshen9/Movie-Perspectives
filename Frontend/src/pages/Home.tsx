@@ -1,4 +1,3 @@
-// src/pages/Home.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../models/Movie';
@@ -51,7 +50,7 @@ export default function Home({
 
   const norm = searchTerm.trim().toLowerCase();
 
-  // build the full filtered list
+
   let filteredAll: Movie[];
   if (searchType === 'all') {
     filteredAll = norm
@@ -61,7 +60,7 @@ export default function Home({
         )
       : movies;
   } else if (!norm) {
-    // default “Most popular” six
+   
     filteredAll = movies.slice(0, 6);
   } else if (searchType === 'title') {
     filteredAll = movies.filter(m =>
@@ -74,7 +73,7 @@ export default function Home({
     );
   }
 
-  // pagination logic
+
   const lastIdx = currentPage * moviesPerPage;
   const firstIdx = lastIdx - moviesPerPage;
   const currentMovies = filteredAll.slice(firstIdx, lastIdx);

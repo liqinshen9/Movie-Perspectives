@@ -4,13 +4,12 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import ChatPage from './ChatPage'
 import { getHistory, postMessage } from '../api/chatService'
 
-HTMLDivElement.prototype.scrollTo = vi.fn()
+;(HTMLDivElement.prototype as any).scrollTo = vi.fn()
 
 vi.mock('../api/chatService', () => ({
   getHistory: vi.fn(),
   postMessage: vi.fn(),
 }))
-
 
 ;(globalThis.fetch as any) = vi.fn()
 
@@ -23,7 +22,6 @@ describe('ChatPage Component', () => {
       { id: 2, fromUsername: 'bob',   text: 'Hey',   sentAt: '2025-01-01T00:00:01Z' },
     ])
 
-   
     ;(globalThis.fetch as any).mockResolvedValue({
       ok: true,
       json: async () => ({ shared: false }),

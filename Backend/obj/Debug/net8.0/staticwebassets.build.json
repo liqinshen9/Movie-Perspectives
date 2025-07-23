@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "nBL4Dq889yp/FiOlOi6MxTTWIvasa0PaM2Iey37I+Ko=",
-  "Source": "MoviePerspectives",
-  "BasePath": "_content/MoviePerspectives",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"FkAwvQR22fByiOJENqZEdEwqCV/euOFlcWoNPXCpTqw=","Source":"MoviePerspectives","BasePath":"_content/MoviePerspectives","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

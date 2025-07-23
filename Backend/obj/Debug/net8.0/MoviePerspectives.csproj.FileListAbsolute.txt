@@ -163,11 +163,6 @@ C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\runtimes\br
 C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets.development.json
-C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets\msbuild.MoviePerspectives.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets\msbuild.build.MoviePerspectives.props
-C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.MoviePerspectives.props
-C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.MoviePerspectives.props
-C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\scopedcss\bundle\MoviePerspectives.styles.css
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\MoviePer.01FD4754.Up2Date
 C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\MoviePerspectives.dll
@@ -204,3 +199,10 @@ C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\runtimes\wi
 C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\package-lock.json
 C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\package.json
+C:\Users\spong\Documents\Movie-Perspectives\Backend\bin\Debug\net8.0\MoviePerspectives.staticwebassets.endpoints.json
+C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\spong\Documents\Movie-Perspectives\Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
