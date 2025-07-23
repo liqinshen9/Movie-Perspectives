@@ -1,6 +1,7 @@
  # Movie-Perspectives
 
 Movie Perspectives is a full‑stack project built with a React + TypeScript front end and a .NET 8.0 backend with a SQL database. Inspired by my passion for films and storytelling, this web application serves as a practical project for NZMSA 2025 Phase 2 — it allows users to explore movies, post reviews, discuss their favorite moments, and share their individual perspectives.
+
 Demo: Please watch the walkthrough video here.
 
 Movie Perspectives follows the “networking” theme by making it easy to connect with others: you can follow fellow movie fans to build your own circle, send one‑on‑one messages in chat, share contact details only with people you trust, and start threaded talks under each film. These social features turn the app from a simple movie database into a lively space where people share unique thoughts about movies, talk about favourites, and grow their network around their love of movies.
@@ -15,6 +16,7 @@ SQL Server (local or remote)
 
 ## Cloning the Repository to your local machine
 git clone https://github.com/liqinshen9/Movie-Perspectives.git
+
 cd Movie-Perspectives
 
 ## Backend Setup
@@ -69,4 +71,3 @@ npm run cypress:open
 
 
 Thank you for exploring Movie Perspectives!
-Feel free to dive into the Frontend/README.md and Backend/README.md for more in‑depth documentation on architecture and endpoints.
