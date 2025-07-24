@@ -22,14 +22,18 @@ cd Movie-Perspectives
 ## Backend Setup
 cd Backend
 
-### Configure your database
+### Configure your database (I’ve taken care of this — just be aware it can sometimes glitch.)
 Edit appsettings.json and set your connection string under ConnectionStrings:DefaultConnection.
 
-### Enable EF Core
-In Program.cs, make sure your SQL Server line is active:
+"ConnectionStrings": {
+    "DefaultConnection": "Server=tcp:aw-server0406.database.windows.net,1433;Initial Catalog=MoveiPerspectives;User     ID=cloudadmin;Password=P@ssw0rd!;Encrypt=True;TrustServerCertificate=False;"
+}
 
-builder.Services.AddDbContext<MovieContext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+### Enable EF Core (I’ve taken care of this — just be aware it can sometimes glitch.)
+In Program.cs in the Backend folder, make sure your SQL Server line is active:
+
+builder.Services.AddDbContext<MovieContext>(opts =>
+  opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 Here is a screenshot of the azure SQL database I am using. 
@@ -75,4 +79,4 @@ cd Frontend
 npm run cypress:open
 
 
-Thank you for exploring Movie Perspectives!
+# Thank you for exploring Movie Perspectives!
