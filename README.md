@@ -12,7 +12,7 @@ Movie Perspectives follows the “networking” theme by making it easy to con
 
 Node.js & npm
 
-SQL Server (local or remote)
+SQL Server (remote). Fully configured — everything is ready on your end.
 
 ## Cloning the Repository to your local machine
 git clone https://github.com/liqinshen9/Movie-Perspectives.git
