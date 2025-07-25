@@ -3,7 +3,7 @@
 Movie Perspectives is a full‑stack project built with a React + TypeScript front end and a .NET 8.0 backend with a SQL database. Inspired by my passion for films and storytelling, this web application serves as a practical project for NZMSA 2025 Phase 2 — it allows users to explore movies, post reviews, discuss their favorite moments, and share their individual perspectives.
 
 **Deployed website on live:**  
-https://movie‑perspectives‑bhcncrhzgudghzbc.azurewebsites.net/  
+https://movie-perspectives-bhcncrhzgudghzbc.newzealandnorth-01.azurewebsites.net/
 
 **Demo:**
 Please watch the walkthrough video here: https://drive.google.com/file/d/18_6gK08P0U21WKqhgeejaEYwNCXM-Xfg/view?usp=sharing
