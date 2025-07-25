@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "Backend\\bin\\Release\\net8.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/b05151b2-55c0-49e0-adc4-6f5fd89bcd77/resourceGroups/MoviePerspectivesRG/providers/Microsoft.Web/sites/movpers-app"
+}
